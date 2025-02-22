@@ -23,7 +23,7 @@ function App() {
         />
         {/* <AllProducts /> */}
         {/* <MainContent /> */}
-
+        <div>dit mrj m bac ki</div>
 
         <Suspense fallback={<div>Loading...</div>}></Suspense>
         <Routes>
