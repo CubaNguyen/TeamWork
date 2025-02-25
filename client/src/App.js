@@ -5,9 +5,9 @@ import Navbar from './components/Navbar/Navbar';
 import { Suspense, lazy } from 'react';
 import Footer from './components/Footer/Footer';
 import AllProducts from './components/AllProducts/AllProducts';
-import Sample from './Sample';
 import MiniNavBar from './components/Navbar/MiniNavBar';
 import MainContent from './components/content/MainContent';
+import Order from './components/Order/Order';
 
 
 const Home = lazy(() => import('./pages/Home'));
@@ -19,11 +19,10 @@ function App() {
   return (
     <div className='container'>
       <Router>
-        <Navbar
-        />
+        <Navbar />
         {/* <AllProducts /> */}
         {/* <MainContent /> */}
-
+        <Order />
 
         <Suspense fallback={<div>Loading...</div>}></Suspense>
         <Routes>
