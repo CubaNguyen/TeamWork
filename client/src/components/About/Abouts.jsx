@@ -34,6 +34,7 @@ const About = () => {
             </p>
             <p className="text7">Trân trọng,</p>
             <p className="text8">Helios</p>
+            // Day_la_du_an_cua_sep_***_dep_zai_ahihi
         </div>
     );
 };
