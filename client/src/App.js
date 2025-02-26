@@ -7,7 +7,7 @@ import Footer from './components/Footer/Footer';
 import AllProducts from './components/AllProducts/AllProducts';
 import MiniNavBar from './components/Navbar/MiniNavBar';
 import MainContent from './components/content/MainContent';
-import Order from './components/Order/Order';
+import Global from './components/Global/Global';
 
 
 const Home = lazy(() => import('./pages/Home'));
@@ -22,7 +22,6 @@ function App() {
         <Navbar />
         {/* <AllProducts /> */}
         {/* <MainContent /> */}
-        <Order />
 
         <Suspense fallback={<div>Loading...</div>}></Suspense>
         <Routes>

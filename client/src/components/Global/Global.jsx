@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Order.scss';
+import './Global.scss';
 import HomeImage from "./homeImage.webp";
 import TheSignatureImage from "./TheSignatureImage.webp";
 import TheHorizonImage from "./TheHorizonImage.webp";
@@ -8,7 +8,7 @@ import SliverItem2 from "./SliverItem2.webp";
 import ThanksImage from "./ThanksImage.png";
 
 
-const Order = () => {
+const Global = () => {
 
 
     return (
@@ -254,4 +254,4 @@ const Order = () => {
     );
 };
 
-export default Order; 
+export default Global; 
