@@ -3,9 +3,7 @@ import './App.scss'
 import Navbar from './components/Navbar/Navbar';
 import { Suspense, lazy } from 'react';
 import Footer from './components/Footer/Footer';
-import AllProducts from './components/AllProducts/AllProducts';
-import MiniNavBar from './components/Navbar/MiniNavBar';
-import MainContent from './components/content/MainContent';
+
 import HomeAdmin from './components/Admin/HomeAdmin/HomeAdmin';
 import AdminRoutes from './routes/AdminRoutes';
 import CustomerRoutes from './routes/CustomerRoutes';
@@ -22,7 +20,7 @@ function App() {
     <div className='container'>
 
       <Router>
-        {!window.location.pathname.startsWith("/homeAdmin") && <Navbar />}
+        {!window.location.pathname.startsWith("/homeAdmin") && <div className="navbar"><Navbar /></div>}
 
 
         {window.location.pathname.startsWith("/homeAdmin") ? (

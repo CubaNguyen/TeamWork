@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.scss'
 import MiniNavBar from './MiniNavBar';
+import { NavLink } from "react-router-dom";
+
 
 const Navbar = () => {
 
@@ -15,14 +17,16 @@ const Navbar = () => {
             <div className='navbarContainer'>
                 <div className='topNav'>
                     <div className='left'>
-                        <div>GLOBAL SHOP</div>
+                        <NavLink style={{ textDecoration: 'none', color: 'white' }} to="/global">GLOBAL SHOP</NavLink>
                         <div>ELDER</div>
-                        <div>ABOUT US</div>
-                        <div>STORE</div>
+                        <NavLink style={{ textDecoration: 'none', color: 'white' }} to="/about">ABOUT US</NavLink>
+                        <NavLink style={{ textDecoration: 'none', color: 'white' }} to="/collections/accessories">STORE</NavLink>
+
+
                     </div>
-                    <div className='middle'>
+                    <NavLink style={{ textDecoration: 'none', color: 'white' }} to="/" className='middle'>
                         HELIOS
-                    </div>
+                    </NavLink>
                     <div className='right'>
                         <div>icon</div>
                         <div>icon</div>
@@ -31,16 +35,16 @@ const Navbar = () => {
                 </div>
 
                 <div className='bottomNav'>
-                    <div className="navItem"
+                    <NavLink style={{ color: 'white' }} to="/allproduct" className="navItem"
                         onMouseEnter={() => setShowJewelry(true)}
                         onMouseLeave={() => setShowJewelry(false)}
-                    >JEWELRY</div>
+                    >JEWELRY</NavLink>
                     <div className="navItem"
                         onMouseEnter={() => setShowGift(true)}
                         onMouseLeave={() => setShowGift(false)}
                     >HOLIDAY GIFT</div>
                     <div className="navItem">COLLECTIONS</div>
-                    <div className="navItem">ACCESSORIES</div>
+                    <NavLink style={{ color: 'white' }} to="/collections/accessories" className="navItem">ACCESSORIES</NavLink>
                     <div className="navItem">EYEWEAR</div>
                     <div className="navItem">SALE OFF</div>
                 </div>
