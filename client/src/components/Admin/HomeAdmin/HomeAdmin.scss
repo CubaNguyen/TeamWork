@@ -1,0 +1,22 @@
+.adminNav{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .content{
+        
+        width: 200px;
+        height: 30px;
+        display: flex;
+        justify-content: center; 
+        align-items: center; 
+
+        color: white; /* Text color */
+        background-color: black;
+    
+    padding: 10px;
+    cursor: pointer;
+    }
+    .active {
+        background-color: rgb(57, 193, 211); /* Background color for Super Admin */
+      }
+}
