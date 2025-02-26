@@ -9,7 +9,6 @@ import AdminRoutes from './routes/AdminRoutes';
 import CustomerRoutes from './routes/CustomerRoutes';
 
 
-const Home = lazy(() => import('./pages/Home'));
 const Products = lazy(() => import('./pages/Products'));
 const Cart = lazy(() => import('./pages/Cart'));
 
@@ -22,19 +21,16 @@ function App() {
       <Router>
         {!window.location.pathname.startsWith("/homeAdmin") && <div className="navbar"><Navbar /></div>}
 
+        <div className='content'>
+          {window.location.pathname.startsWith("/homeAdmin") ? (
+            <AdminRoutes />
+          ) : (
+            <>
+              <CustomerRoutes />
 
-        {window.location.pathname.startsWith("/homeAdmin") ? (
-          <AdminRoutes />
-        ) : (
-          <>
-            <CustomerRoutes />
-
-          </>
-
-
-        )}
-
-
+            </>
+          )}
+        </div>
 
       </Router>
 

@@ -3,18 +3,18 @@ import './About.scss';
 
 const About = () => {
     return (
-        <div>
+        <div className='aboutContainer'>
             <h2>About Helios</h2>
 
             <p className="text1">
-                Helios không chỉ kể tinh thần của chúng tôi qua từng chế tác, mà còn đồng hành để khắc sâu câu chuyện của bạn ở từng món <br /> 
+                Helios không chỉ kể tinh thần của chúng tôi qua từng chế tác, mà còn đồng hành để khắc sâu câu chuyện của bạn ở từng món <br />
                 đồ bạn sở hữu.Chúng ta là cá thể riêng biệt nên hãy biến câu chuyện của riêng chúng ta theo 1 cách KHÁC BIỆT.
             </p>
             <p className="text2">
                 Mỗi người chúng ta đều là duy nhất. Một số người chọn trở thành những cây cao vươn tới bầu trời, trong khi những người <br />
-                 khác lại tìm thấy vẻ đẹp như một bông hoa mỏng manh ẩn mình trong góc vườn.Nhưng dù là ai, dù đứng ở đâu, sự khác biệt <br />
-                  luôn tồn tại. Và đó chính là tinh thần đã khai sinh ra Helios – nơi dành cho những người đàn ông trưởng thành,dám thay đổi,<br />
-                   dám khác biệt, và tôn thờ tự do từ trong tâm hồn. <br />
+                khác lại tìm thấy vẻ đẹp như một bông hoa mỏng manh ẩn mình trong góc vườn.Nhưng dù là ai, dù đứng ở đâu, sự khác biệt <br />
+                luôn tồn tại. Và đó chính là tinh thần đã khai sinh ra Helios – nơi dành cho những người đàn ông trưởng thành,dám thay đổi,<br />
+                dám khác biệt, và tôn thờ tự do từ trong tâm hồn. <br />
             </p>
             <p className="text3">
                 Thứ Helios mang đến không đơn thuần là trang sức. Với mỗi sản phẩm là một câu chuyện riêng, hành trình của mỗi món đồ không bao giờ thực sự kết thúc. Với mỗi vết xước, một vết nứt hình thành,
@@ -34,7 +34,7 @@ const About = () => {
             </p>
             <p className="text7">Trân trọng,</p>
             <p className="text8">Helios</p>
-            // Day_la_du_an_cua_sep_***_dep_zai_ahihi
+
         </div>
     );
 };

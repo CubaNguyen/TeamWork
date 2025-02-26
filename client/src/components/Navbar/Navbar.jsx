@@ -43,7 +43,7 @@ const Navbar = () => {
                         onMouseEnter={() => setShowGift(true)}
                         onMouseLeave={() => setShowGift(false)}
                     >HOLIDAY GIFT</div>
-                    <div className="navItem">COLLECTIONS</div>
+                    <NavLink style={{ color: 'white' }} to="/ourCollections" className="navItem">COLLECTIONS</NavLink>
                     <NavLink style={{ color: 'white' }} to="/collections/accessories" className="navItem">ACCESSORIES</NavLink>
                     <div className="navItem">EYEWEAR</div>
                     <div className="navItem">SALE OFF</div>
@@ -55,7 +55,7 @@ const Navbar = () => {
                         onMouseEnter={() => setShowJewelry(true)}
                         style={{
                             position: 'absolute',
-                            top: '13%',
+                            top: '101%',
                             left: 0,
                             width: "100%",
                         }}
@@ -70,7 +70,7 @@ const Navbar = () => {
                         onMouseEnter={() => setShowGift(true)}
                         style={{
                             position: 'absolute',
-                            top: '13%',
+                            top: '101%',
                             left: 0,
                             width: "100%",
                         }}
