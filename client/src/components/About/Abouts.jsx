@@ -22,7 +22,7 @@ const About = () => {
             </p>
             <p className="text4">
                 Chúng tôi tin rằng, khi bạn chọn Helios, thứ bạn chọn không chỉ là một món phụ kiện. Bạn đang chọn phong cách sống – dám phá bỏ giới hạn,
-                đón nhận trải nghiệm mới, và theo đuổi những gì bạn cho là đúng đắn.
+                đón nhận trải nghiệm mới, và theo đuổi những gì bạn cho là đúng đắn..
             </p>
             <p className="text5">
                 Đứng sau mỗi chế tác là sự tận tâm của những nghệ nhân Việt với hơn 20 năm kinh nghiệm, kết hợp cùng những nhà thiết kế trẻ mang tư duy đột phá.
