@@ -134,13 +134,43 @@ function Gift() {
             </div>
             
             <div className="duoi">
-                <div className="left">
+                <div className="box">
                     anh 1
                 </div>
-                <div className="giua">
-                    
+                
+                <div className="box">
+                    anh 2
                 </div>
-                <div className="right">
+            </div>
+
+            <div className="tren">
+                <h2>QUA TANG DA TANG Y NGHIA</h2>
+            </div>
+            <div className="duoi">
+            <div className="box">
+                    anh 1
+                </div>
+                
+                <div className="box">
+                    anh 2
+                </div>
+            </div>
+
+            <div className="image">
+                <div className="text-container"> 
+                    <div className="overlay-text">Chữ đè lên ảnh </div>
+                </div>
+            </div>
+            
+            <div className="tren">
+                <h2>GHE THAM HELIOS</h2>
+            </div>
+            <div className="duoi">
+                <div className="box">
+                    anh 1
+                </div>
+                
+                <div className="box">
                     anh 2
                 </div>
             </div>
