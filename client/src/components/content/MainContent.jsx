@@ -5,7 +5,7 @@ import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 
 const MainContent = () => {
-
+//dsdsds
     const products = [
         { id: 1, name: 'Mũ Racer Helios', img: 'image1.jpg', price: '345,000 VND' },
         { id: 2, name: 'Belt Scottish Helios Black Silver', img: 'image2.jpg', price: '4,850,000 VND' },

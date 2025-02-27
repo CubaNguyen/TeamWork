@@ -5,6 +5,10 @@ import Navbar from './components/Navbar/Navbar';
 import { Suspense, lazy } from 'react';
 import Footer from './components/Footer/Footer';
 import AllProducts from './components/AllProducts/AllProducts';
+<<<<<<< HEAD
+=======
+
+>>>>>>> feature/Contact
 import MiniNavBar from './components/Navbar/MiniNavBar';
 import MainContent from './components/content/MainContent';
 
