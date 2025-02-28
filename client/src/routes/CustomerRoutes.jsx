@@ -8,6 +8,7 @@ import Accessories from "../pages/Accessories/Accessories";
 import AllProducts from "../pages/AllProducts/AllProducts";
 import About from "../pages/About/Abouts";
 import OurCollection from "../pages/OurCollection/OurCollection";
+import Contact from "../pages/Contact/Contact";
 
 const Home = lazy(() => import("../pages/Home/Home"));
 const Products = lazy(() => import("../pages/Products"));
@@ -16,6 +17,7 @@ const Cart = lazy(() => import("../pages/Cart"));
 const CustomerRoutes = () => {
     return (
         <>
+
             <Suspense fallback={<div>Loading...</div>}> </Suspense>
             <Routes>
 
@@ -23,6 +25,8 @@ const CustomerRoutes = () => {
                 <Route path="/products" element={<Products />} />
                 <Route path="/global" element={<Global />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/collections/accessories" element={<Accessories />} />
                 <Route path="/ourCollections/" element={<OurCollection />} />

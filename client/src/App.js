@@ -9,8 +9,6 @@ import AdminRoutes from './routes/AdminRoutes';
 import CustomerRoutes from './routes/CustomerRoutes';
 
 
-const Products = lazy(() => import('./pages/Products'));
-const Cart = lazy(() => import('./pages/Cart'));
 
 
 function App() {

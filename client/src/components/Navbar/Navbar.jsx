@@ -18,7 +18,7 @@ const Navbar = () => {
                 <div className='topNav'>
                     <div className='left'>
                         <NavLink style={{ textDecoration: 'none', color: 'white' }} to="/global">GLOBAL SHOP</NavLink>
-                        <div>ELDER</div>
+                        <NavLink style={{ textDecoration: 'none', color: 'white' }} to="/contact">CONTACT</NavLink>
                         <NavLink style={{ textDecoration: 'none', color: 'white' }} to="/about">ABOUT US</NavLink>
                         <NavLink style={{ textDecoration: 'none', color: 'white' }} to="/collections/accessories">STORE</NavLink>
 
