@@ -39,10 +39,10 @@ const Navbar = () => {
                         onMouseEnter={() => setShowJewelry(true)}
                         onMouseLeave={() => setShowJewelry(false)}
                     >JEWELRY</NavLink>
-                    <div className="navItem"
+                    <NavLink style={{ color: 'white' }} to="/holidayGift" className="navItem"
                         onMouseEnter={() => setShowGift(true)}
                         onMouseLeave={() => setShowGift(false)}
-                    >HOLIDAY GIFT</div>
+                    >HOLIDAY GIFT</NavLink>
                     <NavLink style={{ color: 'white' }} to="/ourCollections" className="navItem">COLLECTIONS</NavLink>
                     <NavLink style={{ color: 'white' }} to="/collections/accessories" className="navItem">ACCESSORIES</NavLink>
                     <div className="navItem">EYEWEAR</div>

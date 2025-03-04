@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
 
-const HomeAdmin = lazy(() => import("../components/Admin/HomeAdmin/HomeAdmin"));
+const HomeAdmin = lazy(() => import("../Admin/HomeAdmin/HomeAdmin"));
 
 
 

@@ -9,6 +9,7 @@ import AllProducts from "../pages/AllProducts/AllProducts";
 import About from "../pages/About/Abouts";
 import OurCollection from "../pages/OurCollection/OurCollection";
 import Contact from "../pages/Contact/Contact";
+import Gift from "../pages/Gift/gift";
 
 const Home = lazy(() => import("../pages/Home/Home"));
 const Products = lazy(() => import("../pages/Products"));
@@ -27,6 +28,7 @@ const CustomerRoutes = () => {
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
 
+                <Route path="/holidayGift" element={< Gift />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/collections/accessories" element={<Accessories />} />
                 <Route path="/ourCollections/" element={<OurCollection />} />

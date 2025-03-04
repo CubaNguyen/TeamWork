@@ -1,14 +1,16 @@
 
 import React, { useState, useEffect } from 'react';
-import './HomeAdmin.scss';
+import './NavAdmin.scss';
 import { NavLink } from "react-router-dom";
 
-const HomeAdmin = () => {
+const NavAdmin = () => {
 
 
     return (
-        <div className=''>
-
+        <div className='adminContainer'>
+            <div className='text'>
+                HELIOS
+            </div>
 
             <div className='adminNav'>
                 <NavLink style={{ textDecoration: 'none' }} exact to="/homeAdmin/superAdmin" className='content' activeClassName='active'>Super Admin</NavLink>
@@ -24,4 +26,4 @@ const HomeAdmin = () => {
     );
 };
 
-export default HomeAdmin;
+export default NavAdmin;

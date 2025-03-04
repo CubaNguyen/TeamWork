@@ -4,9 +4,9 @@ import Navbar from './components/Navbar/Navbar';
 import { Suspense, lazy } from 'react';
 import Footer from './components/Footer/Footer';
 
-import HomeAdmin from './components/Admin/HomeAdmin/HomeAdmin';
 import AdminRoutes from './routes/AdminRoutes';
 import CustomerRoutes from './routes/CustomerRoutes';
+import NavAdmin from './Admin/NavAdmin/NavAdmin';
 
 
 
@@ -17,7 +17,10 @@ function App() {
     <div className='container'>
 
       <Router>
-        {!window.location.pathname.startsWith("/homeAdmin") && <div className="navbar"><Navbar /></div>}
+        <div className="navbar">
+          {window.location.pathname.startsWith("/homeAdmin") ? <NavAdmin /> : <Navbar />}
+        </div>
+
 
         <div className='content'>
           {window.location.pathname.startsWith("/homeAdmin") ? (
