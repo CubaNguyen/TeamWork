@@ -10,6 +10,7 @@ import About from "../pages/About/Abouts";
 import OurCollection from "../pages/OurCollection/OurCollection";
 import Contact from "../pages/Contact/Contact";
 import Gift from "../pages/Gift/gift";
+import Login from "../pages/Login/Login";
 
 const Home = lazy(() => import("../pages/Home/Home"));
 const Products = lazy(() => import("../pages/Products"));
@@ -33,6 +34,9 @@ const CustomerRoutes = () => {
                 <Route path="/collections/accessories" element={<Accessories />} />
                 <Route path="/ourCollections/" element={<OurCollection />} />
                 <Route path="/allproduct" element={<AllProducts />} />
+                <Route path="/login" element={<Login />} />
+
+
 
 
                 <Route path="*" element={<NotFound />} />
