@@ -1,8 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import './App.scss'
 import Navbar from './components/Navbar/Navbar';
-import { Suspense, lazy } from 'react';
+// import { Suspense, lazy } from 'react';
 import Footer from './components/Footer/Footer';
+
 
 import AdminRoutes from './routes/AdminRoutes';
 import CustomerRoutes from './routes/CustomerRoutes';
