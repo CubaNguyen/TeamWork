@@ -1,0 +1,101 @@
+.OrderListDiv {
+    height: 100%;
+    width: 100%;
+    border: 2px solid white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .SearchDiv {
+        width: 55%;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .SearchInput {
+        width: 70%;
+        height: 3vh;
+        color: white;
+        padding-left: 20px;
+    }
+
+    .SearchButton {
+        height: 3.5vh;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 80%;
+
+        thead {
+            tr {
+                th {
+                    padding: 10px;
+                    border: 1px solid white;
+                    text-align: center;
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                td {
+                    padding: 8px;
+                    border: 1px solid white;
+                    text-align: center;
+                }
+
+                &:nth-child(even) {
+                    background-color: #f9f9f9;
+                }
+
+                &:hover {
+                    background-color: #ddd;
+                }
+            }
+        }
+    }
+
+    .pagination {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        button {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            background-color: white;
+            cursor: pointer;
+            color: black;
+
+            &:disabled {
+                cursor: not-allowed;
+                opacity: 0.5;
+            }
+        }
+
+        span {
+            font-weight: bold;
+        }
+    }
+}
+
+select {
+    background-color: white !important;
+    color: black !important;
+    border: 1px solid #ccc;
+    padding: 5px;
+    font-size: 14px;
+
+    option {
+        background-color: white !important;
+        color: black !important;
+
+        &:hover {
+            background-color: lightgray !important;
+            color: black !important;
+        }
+    }
+}
