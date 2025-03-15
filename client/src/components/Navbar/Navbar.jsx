@@ -1,16 +1,19 @@
 
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.scss'
 import MiniNavBar from './MiniNavBar';
 import { NavLink } from "react-router-dom";
+import { UserContext } from '../../context/UserContext';
 
 
 const Navbar = () => {
 
     const [showJewelry, setShowJewelry] = useState(false);
     const [showGift, setShowGift] = useState(false);
+
+    const user = useContext(UserContext)
 
     return (
         <>
@@ -28,7 +31,10 @@ const Navbar = () => {
                         HELIOS
                     </NavLink>
                     <div className='right'>
-                        <div>icon</div>
+                        {user.isAuthenticated ? <NavLink style={{ textDecoration: 'none', color: 'white' }} to="/account">Xin chào, {user.user.username}</NavLink> :
+                            <NavLink style={{ textDecoration: 'none', color: 'white' }} to="/login">Đăng ký / Đăng nhập</NavLink>
+                        }
+
                         <div>icon</div>
                         <div>icon</div>
                     </div>

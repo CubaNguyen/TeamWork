@@ -11,6 +11,9 @@ import OurCollection from "../pages/OurCollection/OurCollection";
 import Contact from "../pages/Contact/Contact";
 import Gift from "../pages/Gift/gift";
 import Login from "../pages/Login/Login";
+import Account from "../pages/Account/Account";
+import Register from "../pages/Register/Register";
+import EditAddress from "../pages/EditAddress/EditAddress";
 
 const Home = lazy(() => import("../pages/Home/Home"));
 const Products = lazy(() => import("../pages/Products"));
@@ -35,6 +38,10 @@ const CustomerRoutes = () => {
                 <Route path="/ourCollections/" element={<OurCollection />} />
                 <Route path="/allproduct" element={<AllProducts />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+
+                <Route path="/account" element={<Account />} />
+                <Route path="/account/addresses" element={<EditAddress />} />
 
 
 

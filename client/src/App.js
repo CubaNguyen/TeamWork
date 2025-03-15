@@ -8,12 +8,16 @@ import Footer from './components/Footer/Footer';
 import AdminRoutes from './routes/AdminRoutes';
 import CustomerRoutes from './routes/CustomerRoutes';
 import NavAdmin from './Admin/NavAdmin/NavAdmin';
+import { UserContext } from './context/UserContext';
+import { useContext } from 'react';
 
 
 
 
 function App() {
+  // const user = useContext(UserContext)
 
+  // console.log("🚀 ~ App ~ user:", user)
   return (
     <div className='container'>
 

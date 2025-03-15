@@ -20,6 +20,7 @@ function AdminRoutes() {
                 <Route path="/homeAdmin" element={<HomeAdmin />} />
                 <Route path="/homeAdmin/superAdmin" element={<HomeAdmin />} />
                 <Route path="/homeAdmin/productManager" element={<HomeAdmin />} />
+
                 <Route path="/homeAdmin/orderManager" element={<HomeAdmin />} />
                 <Route path="/homeAdmin/customerManager" element={<HomeAdmin />} />
                 <Route path="*" element={<Navigate to="/homeAdmin" />} />
