@@ -9,7 +9,7 @@ const HomeAdmin = () => {
     return (
 
 
-        <div>
+        <div className='homeAdminContainer'>
             huy
         </div>
     );

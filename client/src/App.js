@@ -15,9 +15,9 @@ import { useContext } from 'react';
 
 
 function App() {
-  // const user = useContext(UserContext)
+  const user = useContext(UserContext)
 
-  // console.log("🚀 ~ App ~ user:", user)
+  console.log("🚀 ~ App ~ user:", user)
   return (
     <div className='container'>
 

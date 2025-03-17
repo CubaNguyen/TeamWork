@@ -56,8 +56,10 @@ const Register = () => {
 
     const handleLogin = async (email, password) => {
         try {
+            
             const res = await await loginService({ email, password })
             console.log(res)
+            
             if (res.code === 200) {
                 loginContext(res.data, res.token)
                 navigate("/")
@@ -68,6 +70,7 @@ const Register = () => {
     };
 
     const handleRegister = async () => {
+        console.log(formData)
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
@@ -75,6 +78,7 @@ const Register = () => {
         }
         try {
             const res = await registerService(formData);
+           
             if (res.data.code === 201) {
                 await handleLogin(formData.email, formData.password)
             }
