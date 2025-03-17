@@ -2,7 +2,9 @@ const authService = require('../services/authService');
 
 const registerController = async (req, res) => {
     try {
-        let { username, email, password, phone } = req.body;
+        let { username, email, password, phone } = req.body;    
+
+       
         // check rỗng 
         if (!username || !email || !password || !phone) {
             return res.status(400).json({ message: "Thiếu thông tin bắt buộc!", code: 400 });
