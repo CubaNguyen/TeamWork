@@ -150,6 +150,7 @@ const CustomerManagement = () => {
         <span style={{ margin: "0 10px" }}>
           Trang {currentPage} / {totalPages}
         </span>
+         {/* Đây là ghi chú trong JSX */}
         <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
           Trang sau
         </button>
