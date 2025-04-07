@@ -1,5 +1,5 @@
 .navbarContainer {
-    height: 90px;
+    height: 100px;
     width: 100%;
 // position: relative;
 // display: flex;
@@ -35,15 +35,15 @@ color: white;
         }
     }
     .bottomNav {
-        height: 30px;
+        height: 40px;
         border-bottom: 1px solid #333;
-       
+       background-color: black;
         display: flex;
         justify-content: center; /* Căn giữa các box theo chiều ngang */
         align-items: center;
         gap: 10px;
         .navItem {
-          
+          text-decoration: none;
           cursor: pointer; // thay đổi con trỏ khi hover
         
           &:hover {

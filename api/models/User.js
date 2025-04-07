@@ -1,65 +1,53 @@
-const mongoose = require('mongoose')
-
-
-const UserSchema = new mongoose.Schema({
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../config/dbConfig");
+const User = sequelize.define("User", {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
     username: {
-        type: String,
-        required: true,
-        min: 3,
-        max: 20,
-        unique: true
+        type: DataTypes.STRING(255),
+        allowNull: false,
+        unique: true,
     },
     email: {
-        type: String,
-        required: true,
-        max: 50,
-        unique: true
+        type: DataTypes.STRING(255),
+        allowNull: false,
+        unique: true,
+        validate: {
+            isEmail: true, // Kiểm tra định dạng email hợp lệ
+        },
     },
     password: {
-        type: String,
-        required: true,
-        min: 6,
-        unique: true
+        type: DataTypes.STRING(255),
+        allowNull: false,
     },
-    profilePicture: {
-        type: String,
-        default: ""
+    phone: {
+        type: DataTypes.STRING(15),
+        unique: true,
+        allowNull: false,
     },
-    coverPicture: {
-        type: String,
-        default: ""
+    address: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
     },
-    followers: {
-        type: Array,
-        default: []
+    role_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 5,
     },
-    followings: {
-        type: Array,
-        default: []
-    },
-    isAdmin: {
-        type: Boolean,
-        default: false
-    },
-    desc: {
-        type: String,
-        max: 50
-    },
-    city: {
-        type: String,
-        max: 50
-    },
-    from: {
-        type: String,
-        max: 50
-    },
-    relationship: {
-        type: Number,
-        enum: [1, 2, 3]
+    status: {
+        type: DataTypes.STRING,
+        defaultValue: "Hoạt động",
+        validate: {
+            isIn: [["Hoạt động", "Đã khóa"]], // Chỉ cho phép 2 giá trị này
+        },
     },
 
-},
-    { timestamps: true }
-)
+}, {
+    timestamps: true,
+    tableName: "users",
+});
 
-module.exports = mongoose.model('User', UserSchema)
+module.exports = User; // Giữ tên model số ít (quy chuẩn của Sequelize)
