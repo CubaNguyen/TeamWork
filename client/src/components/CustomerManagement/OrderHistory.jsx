@@ -1,5 +1,5 @@
 import React from "react";
-
+import './OrderHistory.scss';
 const OrderHistory = ({ orders }) => {
   return (
     <div className="order-history">
