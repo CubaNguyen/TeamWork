@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import './CustomerManagement.scss';// CSS của anh iu
-
+import './CustomerManagement.scss'; // CSS của anh iu
+import { useEffect } from "react"; // nếu chưa import
+import OrderHistory from './OrderHistory';
 
 const initialCustomers = [
   { id: 1, username: "Đặng Văn Chương", email: "a@gmail.com", phone: "0987654321", address: "123 ABC", status: "active" },
@@ -11,6 +12,29 @@ const initialCustomers = [
   { id: 6, username: "Trần Văn A", email: "f@gmail.com", phone: "0988888888", address: "999 XYZ", status: "locked" },
 ];
 
+const orderHistory = {
+  1: [
+    { id: 1002, date: "01/03/2025", total: 1500000, status: "Đã giao hàng" },
+    { id: 1003, date: "15/03/2025", total: 750000, status: "Đang giao hàng" },
+  ],
+  2: [
+    { id: 1004, date: "02/04/2025", total: 300000, status: "Đã giao hàng" }
+  ],
+  3: [
+    { id: 1005, date: "02/04/2025", total: 300000, status: "Đã giao hàng" }
+  ],
+  4: [
+    { id: 1006, date: "02/04/2025", total: 300000, status: "Đã giao hàng" }
+  ],
+  5: [
+    { id: 1007, date: "02/04/2025", total: 300000, status: "Đã giao hàng" }
+  ],
+  6: [
+    { id: 1008, date: "02/04/2025", total: 300000, status: "Đã giao hàng" }
+  ],
+  // Các user khác thêm sau nếu cần
+};
+
 const ITEMS_PER_PAGE = 5;
 
 const CustomerManagement = () => {
@@ -20,15 +44,14 @@ const CustomerManagement = () => {
   const [phoneFilter, setPhoneFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCustomerId, setSelectedCustomerId] = useState(null);
 
-  // Toggle trạng thái Khóa/Mở khóa
   const toggleStatus = (id) => {
     setCustomers(customers.map(customer =>
       customer.id === id ? { ...customer, status: customer.status === "active" ? "locked" : "active" } : customer
     ));
   };
 
-  // Lọc dữ liệu theo từng tiêu chí
   const filteredByName = customers.filter(customer =>
     customer.username.toLowerCase().includes(nameFilter.toLowerCase())
   );
@@ -41,22 +64,28 @@ const CustomerManagement = () => {
     customer.phone.includes(phoneFilter)
   );
 
-  // Lọc theo trạng thái
   const filteredByStatus = customers.filter(customer =>
     statusFilter === "all" || customer.status === statusFilter
   );
 
-  // Kết hợp tất cả bộ lọc
   const finalFilteredCustomers = filteredByName.filter(c1 =>
     filteredByEmail.some(c2 => c2.id === c1.id) &&
     filteredByPhone.some(c3 => c3.id === c1.id) &&
     filteredByStatus.some(c4 => c4.id === c1.id)
   );
 
-  // Phân trang
   const totalPages = Math.ceil(finalFilteredCustomers.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentCustomers = finalFilteredCustomers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  useEffect(() => {
+    if (finalFilteredCustomers.length === 1) {
+      setSelectedCustomerId(finalFilteredCustomers[0].id);
+    } else {
+      setSelectedCustomerId(null); // Nếu không phải 1 người, thì ẩn đi
+    }
+  }, [nameFilter, emailFilter, phoneFilter, statusFilter]);
+  
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) setCurrentPage(page);
@@ -67,24 +96,9 @@ const CustomerManagement = () => {
       <h1>Quản lý Khách hàng</h1>
 
       <div className="controls">
-        <input
-          type="text"
-          placeholder="Nhập tên..."
-          value={nameFilter}
-          onChange={(e) => setNameFilter(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Nhập email..."
-          value={emailFilter}
-          onChange={(e) => setEmailFilter(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Nhập SĐT..."
-          value={phoneFilter}
-          onChange={(e) => setPhoneFilter(e.target.value)}
-        />
+        <input type="text" placeholder="Nhập tên..." value={nameFilter} onChange={(e) => setNameFilter(e.target.value)} />
+        <input type="text" placeholder="Nhập email..." value={emailFilter} onChange={(e) => setEmailFilter(e.target.value)} />
+        <input type="text" placeholder="Nhập SĐT..." value={phoneFilter} onChange={(e) => setPhoneFilter(e.target.value)} />
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
           <option value="all">Tất cả</option>
           <option value="active">Hoạt động</option>
@@ -108,7 +122,11 @@ const CustomerManagement = () => {
           {currentCustomers.map((customer) => (
             <tr key={customer.id}>
               <td>{customer.id}</td>
-              <td>{customer.username}</td>
+              <td>
+                <button className="link-button" onClick={() => setSelectedCustomerId(customer.id)}>
+                  {customer.username}
+                </button>
+              </td>
               <td>{customer.email}</td>
               <td>{customer.phone}</td>
               <td>{customer.address}</td>
@@ -136,9 +154,13 @@ const CustomerManagement = () => {
           Trang sau
         </button>
       </div>
+
+      {selectedCustomerId && orderHistory[selectedCustomerId] && (
+  <OrderHistory orders={orderHistory[selectedCustomerId]} />
+)}
+      
     </div>
   );
 };
 
 export default CustomerManagement;
-                    

@@ -1,29 +1,57 @@
 .customer-management {
     max-width: 900px;
     margin: auto;
-    background: #151515;
-    color: rgb(19, 18, 18);
+    background: #0b0b0b;
+    color: rgb(219, 210, 210);
     padding: 13px;
     border-radius: 18px;
     
     h1 {
       text-align: center;
       color: #4ab9c7;
-      background-color: #111010;
+      background-color: #0b0b0b;
       font-size: 50px;
     }
+    .link-button {
+      background: none;
+      border: none;
+      color: #4dc9ff;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    
+    .order-history {
+      margin-top: 20px;
+      background: #1e1e1e;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    
+    .order-history table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    
+    .order-history th,
+    .order-history td {
+      border: 1px solid #444;
+      padding: 8px;
+      text-align: center;
+    }
+    
   
     .controls {
       display: flex;
       justify-content: space-between;
       margin-bottom: 15px;
-      color: #181717;
+      color: #0b0b0b;
       background-color:#0b0a0a ;
 
       input , select {
         padding: 8px;
         font-size: 16px;
-        color: #0c0c0c;
+        color: #fcf8f8;
         font-weight: 550;
         border-radius: 15px;
         
