@@ -1,176 +1,142 @@
 const userService = require('../services/userService');
 
-
-const updateUserController = async (req, res) => {
+const getProfileController = async (req, res) => {
     try {
-        let userId = req.body.userId;
-        let id = req.params.id;
-        let password = req.body.password;
-        let dataBody = req.body
-        let isAdmin = req.body.isAdmin
-        //&& !isAdmin
-        if (userId !== id) {
-            return res.status(403).json({
-                mess: 'You can only update your account',
-                code: 403,
-                data: ''
-            })
 
-        }
-        let data = await userService.updateUserService(password, dataBody);
+        let data = await userService.getProfileService(req.user)
 
         return res.status(data.code).json({
-            mess: data.mess,
+            message: data.message,
             code: data.code,
-            data: ''
+            data: data.data
         })
 
 
     } catch (err) {
-        console.log("🚀 ~ updateUserController ~ err:", err)
-        res.status(500).json(err);
+        console.log("🚀 ~ getProfileController ~ err:", err)
         return res.status(500).json({
-            mess: 'err from server',
+            message: 'Lỗi từ hệ thống',
+            code: 500,
+            data: ''
+        })
+    }
+}
+
+
+const getAllUsersController = async (req, res) => {
+    try {
+        let data = await userService.getAllUsersService();
+
+        return res.status(data.code).json({
+            message: data.message,
+            code: data.code,
+            data: data.data
+        })
+
+
+    } catch (err) {
+        console.log("🚀 ~ getAllUsersController ~ err:", err)
+        return res.status(500).json({
+            message: 'Lỗi từ hệ thống',
+            code: 500,
+            data: ''
+        })
+    }
+}
+
+const updateUserStatusController = async (req, res) => {
+    try {
+        let { id } = req.params; // Lấy ID từ params
+        let { status } = req.body; // Lấy status từ body
+
+        // Kiểm tra status hợp lệ
+        let data = await userService.updateUserStatusService(id, status);
+        return res.status(data.code).json({
+            message: data.message,
+            code: data.code,
+            data: ""
+        })
+
+    } catch (error) {
+        console.log("🚀 ~ updateUserStatusController ~ err:", err)
+        return res.status(500).json({
+            message: 'Lỗi từ hệ thống',
             code: 500,
             data: ''
         })
     }
 };
-const deleteUserController = async (req, res) => {
 
+const detailUserAndHistoryOrderController = async (req, res) => {
     try {
-        let userId = req.body.userId;
-        let id = req.params.id;
-        let isAdmin = req.body.isAdmin
-        if (userId !== id && !isAdmin) {
-            return res.status(403).json({
-                mess: 'You can only delete your account',
-                code: 403,
-                data: ''
-            })
-        }
-        let data = await userService.deleteUserService(id);
-        return res.status(data.code).json({
-            mess: data.mess,
-            code: data.code,
-            data: ''
-        })
-    } catch (err) {
-        console.log("🚀 ~ updateUserController ~ err:", err)
-        res.status(500).json(err);
-        return res.status(500).json({
-            mess: 'err from server',
-            code: 500,
-            data: ''
-        })
-    }
-}
 
-const getUserController = async (req, res) => {
-    try {
-        let userId = req.query.userId;
-        let username = req.query.username
-        let data = await userService.getUserService(userId, username);
+        const { userId } = req.params;
+
+        let data = await userService.detailUserAndHistoryOrderService(userId);
         return res.status(data.code).json({
-            mess: data.mess,
+            message: data.message,
             code: data.code,
             data: data.data
         })
-    }
-    catch (err) {
-        console.log("🚀 ~ updateUserController ~ err:", err)
-        res.status(500).json(err);
+
+    } catch (error) {
+        console.log("🚀 ~ detailUserAndHistoryOrderController ~ err:", err)
         return res.status(500).json({
-            mess: 'err from server',
+            message: 'Lỗi từ hệ thống',
             code: 500,
             data: ''
         })
     }
 }
 
-const followUserController = async (req, res) => {
+const searchUserByNameAndPhoneController = async (req, res) => {
     try {
-        let userId = req.body.userId;
-        let id = req.params.id;
-        if (userId === id) {
-            return res.status(403).json({
-                mess: 'You cant follow yourself',
-                code: 403,
-                data: ''
-            })
+
+        const { keyword } = req.query; // Lấy keyword từ query string
+        if (!keyword) {
+            return res.status(400).json({ code: 400, message: "Thiếu từ khóa tìm kiếm!" });
         }
-        let data = await userService.followUserService(id, userId);
+        const data = await userService.searchUserByNameAndPhoneService(keyword);
         return res.status(data.code).json({
-            mess: data.mess,
-            code: data.code,
-            data: ''
-        })
-
-
-    }
-    catch (err) {
-        console.log("🚀 ~ followUserController ~ err:", err)
-        res.status(500).json(err);
-        return res.status(500).json({
-            mess: 'err from server',
-            code: 500,
-            data: ''
-        })
-    }
-}
-
-const unfollowUserController = async (req, res) => {
-    try {
-        let userId = req.body.userId;
-        let id = req.params.id;
-        if (userId === id) {
-            return res.status(403).json({
-                mess: 'You cant unfollow yourself',
-                code: 403,
-                data: ''
-            })
-        }
-        let data = await userService.unfollowUserService(id, userId);
-        return res.status(data.code).json({
-            mess: data.mess,
-            code: data.code,
-            data: ''
-        })
-    }
-    catch (err) {
-        console.log("🚀 ~ unfollowUserController ~ err:", err)
-        res.status(500).json(err);
-        return res.status(500).json({
-            mess: 'err from server',
-            code: 500,
-            data: ''
-        })
-    }
-}
-
-const getFriendsController = async (req, res) => {
-    try {
-        let userId = req.params.userId;
-
-        let data = await userService.getFriendsService(userId);
-        return res.status(data.code).json({
-            mess: data.mess,
+            message: data.message,
             code: data.code,
             data: data.data
         })
-    }
-    catch (err) {
-        console.log("🚀 ~ getFriendsController ~ err:", err)
-        res.status(500).json(err);
+
+    } catch (error) {
+        console.log("🚀 ~ searchUserByNameAndPhoneController ~ err:", err)
         return res.status(500).json({
-            mess: 'err from server',
+            message: 'Lỗi từ hệ thống',
             code: 500,
             data: ''
         })
     }
 }
+const updateUserAddressController = async (req, res) => {
+    try {
+        const { userId, address } = req.body;
+        console.log("🚀 ~ updateUserAddressController ~ userId, address :", userId, address )
+        
+        if (!userId || !address) {
+            return res.status(400).json({ message: "Thiếu thông tin." });
+        }
+        const data = await userService.updateUserAddressService(userId, address);
+        return res.status(data.code).json({
+            message: data.message,
+            code: data.code,
+            data: data.data
+        })
 
+    } catch (error) {
+        console.log("🚀 ~ updateUserAddressController ~ err:", err)
+        return res.status(500).json({
+            message: 'Lỗi từ hệ thống',
+            code: 500,
+            data: ''
+        })
+    }
+}
 module.exports = {
-    updateUserController, deleteUserController, getUserController, followUserController, unfollowUserController, getFriendsController
-
+    getProfileController, getAllUsersController, updateUserStatusController, detailUserAndHistoryOrderController, searchUserByNameAndPhoneController,
+    updateUserAddressController
 };
