@@ -29,7 +29,7 @@ const getAllUsersService = async () => {
         if (!users) {
             return res.status(500).json({
                 message: '"Không có khách hàng nào',
-                code: 200,
+                code: 404,
                 data: []
             })
         }

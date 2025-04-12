@@ -2,7 +2,7 @@ const authService = require('../services/authService');
 
 const registerController = async (req, res) => {
     try {
-        let { username, email, password, phone } = req.body;    
+        let { username, email, password, phone } = req.body;  
 
        
         // check rỗng 
@@ -24,6 +24,7 @@ const registerController = async (req, res) => {
             return res.status(400).json({ message: "Số điện thoại không hợp lệ!", code: 400 });
         }
 
+        
         let data = await authService.registerService({ username, email, password, phone });
 
         return res.status(data.code).json({
