@@ -1,6 +1,7 @@
 import React from "react";
 import './OrderHistory.scss'; 
 
+// Đây là component chính
 const OrderHistory = ({ orders }) => {
   return (
     <div className="order-history">
