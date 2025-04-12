@@ -2,7 +2,7 @@ import React, { useContext, useState, } from 'react';
 import "./Account.scss"
 import { UserContext } from '../../context/UserContext';
 import { NavLink } from 'react-router-dom';
-
+    
 
 const Account = () => {
 

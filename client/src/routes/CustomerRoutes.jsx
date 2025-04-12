@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import NotFound from '../pages/NotFound';
-
+import NotFound from "../pages/NotFound/NotFound";
 
 import { lazy, Suspense } from "react";
 import Global from "../pages/Global/Global";
@@ -20,43 +19,31 @@ const Products = lazy(() => import("../pages/Products"));
 const Cart = lazy(() => import("../pages/Cart"));
 
 const CustomerRoutes = () => {
-    return (
-        <>
+  return (
+    <>
+      <Suspense fallback={<div>Loading...</div>}> </Suspense>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/global" element={<Global />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
 
-            <Suspense fallback={<div>Loading...</div>}> </Suspense>
-            <Routes>
+        <Route path="/holidayGift" element={<Gift />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/collections/accessories" element={<Accessories />} />
+        <Route path="/ourCollections/" element={<OurCollection />} />
+        <Route path="/allproduct" element={<AllProducts />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-                <Route path="/" element={<Home />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/global" element={<Global />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/account/addresses" element={<EditAddress />} />
 
-                <Route path="/holidayGift" element={< Gift />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/collections/accessories" element={<Accessories />} />
-                <Route path="/ourCollections/" element={<OurCollection />} />
-                <Route path="/allproduct" element={<AllProducts />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-
-                <Route path="/account" element={<Account />} />
-                <Route path="/account/addresses" element={<EditAddress />} />
-
-
-
-
-                <Route path="*" element={<NotFound />} />
-
-
-
-
-            </Routes>
-        </>
-
-
-
-    );
-}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
+  );
+};
 
 export default CustomerRoutes;

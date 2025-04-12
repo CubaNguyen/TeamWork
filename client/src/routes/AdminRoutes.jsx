@@ -1,33 +1,71 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { lazy, Suspense } from "react";
-
+import { lazy, Suspense, useContext } from "react";
+import CustomerManagement from "../Admin/CustomerManager/CustomerManager";
+import OrderManager from "../Admin/OrderManager/OrderManager";
+import ProductManager from "../Admin/ProductManager/ProductManager";
+import Category from "../Admin/ProductManager/Category/Category";
+import Create from "../Admin/ProductManager/CreateProduct/Create";
+import ViewProduct from "../Admin/ProductManager/View/ViewProduct";
+import EditProduct from "../Admin/ProductManager/EditProduct/EditProduct";
+import { UserContext } from "../context/UserContext";
+import AccessDenied from "./AccessDenied";
 
 const HomeAdmin = lazy(() => import("../Admin/HomeAdmin/HomeAdmin"));
 
-
-
 function AdminRoutes() {
-    // Hàm kiểm tra nếu chưa đăng nhập thì không vào được admin
-    const isAdmin = true; // Thay bằng logic kiểm tra đăng nhập
-    if (!isAdmin) return <Navigate to="/" />; // Nếu không phải admin, chuyển hướng về trang chủ
+  const user = useContext(UserContext);
+  const role = user?.user?.role_id;
 
-    return (
-        <>
-            <Suspense fallback={<div>Loading...</div>}> </Suspense>
-            <Routes>
+  console.log("🚀 ~ AdminRoutes ~ user:", user.user.role_id);
 
+  return (
+    <>
+      <Suspense fallback={<div>Loading...</div>}> </Suspense>
+      <Routes>
+        <Route path="/homeAdmin" element={<HomeAdmin />} />
 
-                <Route path="/homeAdmin" element={<HomeAdmin />} />
-                <Route path="/homeAdmin/superAdmin" element={<HomeAdmin />} />
-                <Route path="/homeAdmin/productManager" element={<HomeAdmin />} />
+        {/* Role 1: SuperAdmin */}
+        <Route
+          path="/homeAdmin/superAdmin"
+          element={role === 1 ? <HomeAdmin /> : <AccessDenied />}
+        />
 
-                <Route path="/homeAdmin/orderManager" element={<HomeAdmin />} />
-                <Route path="/homeAdmin/customerManager" element={<HomeAdmin />} />
-                <Route path="*" element={<Navigate to="/homeAdmin" />} />
-            </Routes>
-        </>
+        {/* Role 2: ProductManager */}
+        <Route
+          path="/homeAdmin/productManager"
+          element={role === 2 ? <ProductManager /> : <AccessDenied />}
+        />
+        <Route
+          path="/homeAdmin/productManager/viewProduct/:productId"
+          element={role === 2 ? <ViewProduct /> : <AccessDenied />}
+        />
+        <Route
+          path="/homeAdmin/productManager/editProduct/:productId"
+          element={role === 2 ? <EditProduct /> : <AccessDenied />}
+        />
+        <Route
+          path="/homeAdmin/productManager/categoryProduct"
+          element={role === 2 ? <Category /> : <AccessDenied />}
+        />
+        <Route
+          path="/homeAdmin/productManager/create"
+          element={role === 2 ? <Create /> : <AccessDenied />}
+        />
 
-    );
+        {/* Role 3: OrderManager */}
+        <Route
+          path="/homeAdmin/orderManager"
+          element={role === 3 ? <OrderManager /> : <AccessDenied />}
+        />
+        {/* Role 4: CustomerManager */}
+        <Route
+          path="/homeAdmin/customerManager"
+          element={role === 4 ? <CustomerManagement /> : <AccessDenied />}
+        />
+        <Route path="*" element={<Navigate to="/homeAdmin" />} />
+      </Routes>
+    </>
+  );
 }
 
 export default AdminRoutes;

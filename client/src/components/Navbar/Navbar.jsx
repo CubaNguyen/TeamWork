@@ -6,12 +6,18 @@ import './Navbar.scss'
 import MiniNavBar from './MiniNavBar';
 import { NavLink } from "react-router-dom";
 import { UserContext } from '../../context/UserContext';
+import { IoSearch } from "react-icons/io5";
+import { BsCartPlus } from "react-icons/bs";
+import SearchModal from '../Search/SearchModal';
 
 
 const Navbar = () => {
 
     const [showJewelry, setShowJewelry] = useState(false);
     const [showGift, setShowGift] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const closeModal = () => setIsModalOpen(false);
 
     const user = useContext(UserContext)
 
@@ -35,8 +41,10 @@ const Navbar = () => {
                             <NavLink style={{ textDecoration: 'none', color: 'white' }} to="/login">Đăng ký / Đăng nhập</NavLink>
                         }
 
-                        <div>icon</div>
-                        <div>icon</div>
+                        <div onClick={() => setIsModalOpen(true)}><IoSearch /></div>
+                        <SearchModal isOpen={isModalOpen} closeModal={closeModal} />
+
+                        <div><BsCartPlus /></div>
                     </div>
                 </div>
 
