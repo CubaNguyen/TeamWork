@@ -1,0 +1,40 @@
+.adminContainer{
+    .text{
+        font-size: 30px;
+        display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    border-bottom: 1px solid #333;
+}
+    .adminNav{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+
+    .content{
+        border-bottom: 1px solid #333;
+        width: 200px;
+        height: 30px;
+        display: flex;
+        justify-content: center; 
+        align-items: center; 
+
+        color:white; /* Text color */
+        // background-color:white;
+    
+    padding: 10px;
+    cursor: pointer;
+    }
+    .active {
+        // background-color: rgb(57, 193, 211); /* Background color for Super Admin */
+        border-bottom: 3px solid #fab320 ;
+        // text-decoration: underline;
+        // text-decoration-color: #fab320;
+        // text-underline-offset: 5px;
+        // text-decoration-thickness: 3px;
+        
+      }
+}
+}

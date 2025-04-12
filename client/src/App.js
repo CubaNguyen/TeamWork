@@ -1,40 +1,52 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import './App.scss'
-import NotFound from './pages/NotFound';
 import Navbar from './components/Navbar/Navbar';
-import { Suspense, lazy } from 'react';
+// import { Suspense, lazy } from 'react';
 import Footer from './components/Footer/Footer';
-import AllProducts from './components/AllProducts/AllProducts';
-
-import MiniNavBar from './components/Navbar/MiniNavBar';
-import MainContent from './components/content/MainContent';
 
 
-const Home = lazy(() => import('./pages/Home'));
-const Products = lazy(() => import('./pages/Products'));
-const Cart = lazy(() => import('./pages/Cart'));
+import AdminRoutes from './routes/AdminRoutes';
+import CustomerRoutes from './routes/CustomerRoutes';
+import NavAdmin from './Admin/NavAdmin/NavAdmin';
+import { UserContext } from './context/UserContext';
+import { useContext } from 'react';
+
+
 
 
 function App() {
+  // const user = useContext(UserContext)
+
+  // console.log("🚀 ~ App ~ user:", user)
   return (
     <div className='container'>
+
       <Router>
-        <Navbar
-        />
-        {/* <AllProducts /> */}
-        {/* <MainContent /> */}
+        <div className="navbar">
+          {window.location.pathname.startsWith("/homeAdmin") ? <NavAdmin /> : <Navbar />}
+        </div>
 
 
-        <Suspense fallback={<div>Loading...</div>}></Suspense>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <div className='content'>
+          {window.location.pathname.startsWith("/homeAdmin") ? (
+            <AdminRoutes />
+          ) : (
+            <>
+              <CustomerRoutes />
+
+            </>
+          )}
+        </div>
+
       </Router>
-      <Footer />
+
+      {!window.location.pathname.startsWith("/homeAdmin") && <Footer />}
+
     </div>
+
+    // <div className='container'>
+    //   <HomeAdmin />
+    // </div>
   );
 }
 
