@@ -1,14 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import CustomerManagement from './components/CustomerManagement/CustomerManagement';
-
+import OrderCollect from "./components/OrderCollect/OrderCollect";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <CustomerManagement />
+    <OrderCollect/>
   </React.StrictMode>
 );
-
-
-

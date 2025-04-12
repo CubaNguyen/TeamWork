@@ -1,0 +1,74 @@
+.order-manager {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .order-table {
+        width: 100%;
+        border-collapse: collapse;
+
+        thead {
+            background: #f5f5f5; // Đảm bảo có màu nền rõ ràng
+            position: sticky;
+            top: 0;
+            z-index: 10;
+
+            th {
+                background: #f5f5f5 !important; // Ép màu nền lên trên cùng
+                color: #333; // Đảm bảo màu chữ dễ đọc
+                padding: 12px;
+                text-align: left;
+                font-weight: bold;
+            }
+        }
+
+        tbody {
+            tr {
+                background: white;
+
+                &:nth-child(even) {
+                    background: #fafafa; // Màu xen kẽ cho dễ nhìn
+                }
+            }
+
+            td {
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+
+            button {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                border: none;
+                cursor: pointer;
+                padding: 5px 10px;
+                border-radius: 4px;
+                font-size: 14px;
+
+                &.view-btn {
+                    color: #007bff;
+                    background: #e7f1ff;
+                }
+
+                &.edit-btn {
+                    color: #ff9900;
+                    background: #fff3e0;
+                }
+            }
+        }
+    }
+}

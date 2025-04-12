@@ -1,0 +1,188 @@
+.customer-manager {
+  font-family: Arial, sans-serif;
+  background-color: #1e1e1e;
+  color: #ffffff;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.customer-manager h1 {
+  font-size: 24px;
+  color: #d4a017;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Bộ lọc */
+.customer-manager .filters {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.customer-manager .filters input {
+  padding: 8px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background-color: #2d2d2d;
+  color: #ffffff;
+  font-size: 14px;
+  width: 200px;
+}
+
+.customer-manager .filters input::placeholder {
+  color: #888;
+}
+
+.customer-manager .filters input:focus {
+  outline: none;
+  border-color: #d4a017;
+}
+
+.customer-manager .filters select {
+  padding: 8px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background-color: #2d2d2d;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.customer-manager .filters select:focus {
+  outline: none;
+  border-color: #d4a017;
+}
+
+/* Bảng khách hàng */
+.customer-manager .customer-table {
+  width: 50%;
+  background: #333;
+  text-align: center;
+  max-width: 800px;
+  border-collapse: collapse;
+  margin: 10px auto;
+}
+
+.customer-manager .customer-table th,
+.customer-manager .customer-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #444;
+}
+
+.customer-manager .customer-table th {
+  background-color: #3a3a3a;
+  font-weight: bold;
+  color: #d4a017;
+}
+
+.customer-manager .customer-table td {
+  font-size: 14px;
+}
+
+.customer-manager .customer-table tr:hover {
+  background-color: #3a3a3a;
+}
+
+.customer-manager .customer-table .status-active {
+  color: #00ff00;
+  font-weight: bold;
+}
+
+.customer-manager .customer-table .status-locked {
+  color: #ff4444;
+  font-weight: bold;
+}
+
+.customer-manager .customer-table .btn-lock,
+.customer-manager .customer-table .btn-unlock {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.customer-manager .customer-table .btn-lock {
+  background-color: #ff4444;
+  color: #ffffff;
+}
+
+.customer-manager .customer-table .btn-lock:hover {
+  background-color: #cc3333;
+}
+
+.customer-manager .customer-table .btn-unlock {
+  background-color: #00cc00;
+  color: #ffffff;
+}
+
+.customer-manager .customer-table .btn-unlock:hover {
+  background-color: #009900;
+}
+
+/* Chi tiết khách hàng */
+.customer-manager .customer-detail {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #2d2d2d;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.customer-manager .customer-detail h2 {
+  color: #d4a017;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+.pagination{
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.customer-manager .customer-detail h3 {
+  color: #d4a017;
+  font-size: 16px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.customer-manager .customer-detail p {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.customer-manager .customer-detail p strong {
+  color: #ffffff;
+}
+
+.customer-manager .customer-detail table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #3a3a3a;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.customer-manager .customer-detail table th,
+.customer-manager .customer-detail table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #444;
+}
+
+.customer-manager .customer-detail table th {
+  background-color: #4a4a4a;
+  font-weight: bold;
+  color: #d4a017;
+}
+
+.customer-manager .customer-detail table td {
+  font-size: 14px;
+}
+
+.customer-manager .customer-detail table tr:hover {
+  background-color: #4a4a4a;
+}
