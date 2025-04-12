@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import './CustomerManagement.scss'; // CSS của anh iu
 import { useEffect } from "react"; // nếu chưa import
 import OrderHistory from './OrderHistory';
-
+// Đây là một comment một dòng
 const initialCustomers = [
   { id: 1, username: "Đặng Văn Chương", email: "a@gmail.com", phone: "0987654321", address: "123 ABC", status: "active" },
   { id: 2, username: "Vũ Thành Đạt", email: "b@gmail.com", phone: "0978123456", address: "456 XYZ", status: "locked" },
