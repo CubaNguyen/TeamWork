@@ -1,10 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import OrderManagement from "./components/OrderManagement/OrderManagement";
 
-import OrderCollect from "./components/OrderCollect/OrderCollect";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <OrderCollect/>
+    <BrowserRouter>
+      <OrderManagement />
+    </BrowserRouter>
   </React.StrictMode>
 );
