@@ -126,5 +126,6 @@ function Checkout() {
     </div>
   );
 }
-// giao dien thanh toan
+// giao dien thanh toan ne
+/* Đây là một comment */
 export default Checkout;
