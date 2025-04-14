@@ -126,5 +126,5 @@ function Checkout() {
     </div>
   );
 }
-
+// giao dien thanh toan
 export default Checkout;
