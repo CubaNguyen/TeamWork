@@ -1,6 +1,6 @@
 import React from "react";
-import "./success.scss";
-function Success() {
+import "./success_style.scss";
+function Success_0() {
   return (
     <div className="success-page">
       <header className="success-header">HELIOS</header>
@@ -13,5 +13,5 @@ function Success() {
   );
 }
 
-export default Success;
+export default Success_0;
 /* Đây là một comment */

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./checkout.scss";
+import "./checkout_style.scss";
 
-function Checkout() {
+function Checkout_0() {
   const [selectedMethod, setSelectedMethod] = useState("zalo");
   const navigate = useNavigate(); // ✅ Hook điều hướng
 
@@ -128,4 +128,4 @@ function Checkout() {
 }
 // giao dien thanh toan ne
 /* Đây là một comment */
-export default Checkout;
+export default Checkout_0;
