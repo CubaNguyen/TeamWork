@@ -1,12 +1,11 @@
-// src/components/CustomerManager.jsx
 import React, { useState, useEffect } from "react";
 import "./OrderManagement.scss";
+import OrderHistory from "./OrderHistory";
 
 const OrderManagement = () => {
   const [view, setView] = useState("list");
   const [selectedCustomerId, setSelectedCustomerId] = useState(null);
   const [customers, setCustomers] = useState([]);
-  const [orders, setOrders] = useState([]);
   const [searchName, setSearchName] = useState("");
   const [searchEmail, setSearchEmail] = useState("");
   const [searchPhone, setSearchPhone] = useState("");
@@ -98,27 +97,6 @@ const OrderManagement = () => {
     startIndex + customersPerPage
   );
 
-  useEffect(() => {
-    if (selectedCustomerId) {
-      setOrders([
-        {
-          orderId: "DH001",
-          date: "2025-04-01",
-          total: 500000,
-          status: "Hoàn thành",
-          customerId: 1,
-        },
-        {
-          orderId: "DH002",
-          date: "2025-04-02",
-          total: 750000,
-          status: "Đang giao",
-          customerId: 1,
-        },
-      ].filter((order) => order.customerId === selectedCustomerId));
-    }
-  }, [selectedCustomerId]);
-
   const toggleStatus = (customerId) => {
     setCustomers((prev) =>
       prev.map((customer) =>
@@ -140,7 +118,6 @@ const OrderManagement = () => {
   const handleBack = () => {
     setView("list");
     setSelectedCustomerId(null);
-    setOrders([]);
   };
 
   const handlePrevPage = () => {
@@ -155,14 +132,28 @@ const OrderManagement = () => {
     }
   };
 
-  const selectedCustomer = customers.find((c) => c.id === selectedCustomerId);
+  // Giả lập đơn hàng nếu cần truyền vào OrderHistory
+  const orders = [
+    {
+      orderId: "DH001",
+      date: "10/04/2025",
+      total: 150000,
+      status: "Đã giao",
+    },
+    {
+      orderId: "DH002",
+      date: "12/04/2025",
+      total: 200000,
+      status: "Chờ xác nhận",
+    },
+  ];
 
   return (
     <div className="customer-manager">
       {view === "list" ? (
         <>
           <div className="header">
-            <h2>Quản lý khách hàng</h2>
+            <h2>Quản Lý Khách Hàng</h2>
           </div>
           <div className="search-bar">
             <input
@@ -277,70 +268,11 @@ const OrderManagement = () => {
           </div>
         </>
       ) : (
-        <>
-          <h2>Lịch sử đơn hàng của {selectedCustomer?.username}</h2>
-          {selectedCustomer && (
-            <ul className="customer-details">
-              <li>
-                <strong>Username:</strong> {selectedCustomer.username}
-              </li>
-              <li>
-                <strong>Email:</strong> {selectedCustomer.email}
-              </li>
-              <li>
-                <strong>Số điện thoại:</strong> {selectedCustomer.phone}
-              </li>
-              <li>
-                <strong>Địa chỉ:</strong> {selectedCustomer.address}
-              </li>
-              <li>
-                <strong>Trạng thái:</strong>{" "}
-                <span
-                  className={
-                    selectedCustomer.status === "Chưa khóa"
-                      ? "status-active"
-                      : "status-blocked"
-                  }
-                >
-                  {selectedCustomer.status}
-                </span>{" "}
-                {selectedCustomer.status === "Chưa khóa" ? "✔️" : "❌"}
-              </li>
-              <li>
-                <strong>Ngày tạo:</strong> {selectedCustomer.createdDate}
-              </li>
-            </ul>
-          )}
-          <table className="order-table">
-            <thead>
-              <tr>
-                <th>Mã đơn hàng</th>
-                <th>Ngày đặt</th>
-                <th>Tổng tiền</th>
-                <th>Trạng thái</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.length > 0 ? (
-                orders.map((order) => (
-                  <tr key={order.orderId}>
-                    <td>{order.orderId}</td>
-                    <td>{order.date}</td>
-                    <td>{order.total.toLocaleString()} VNĐ</td>
-                    <td>{order.status}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="4">Chưa có đơn hàng nào.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-          <button onClick={handleBack} className="back-btn">
-            Quay lại
-          </button>
-        </>
+        <OrderHistory
+          customer={customers.find((c) => c.id === selectedCustomerId)}
+          orders={orders} // Truyền đơn hàng tương ứng nếu có
+          onBack={handleBack}
+        />
       )}
     </div>
   );
