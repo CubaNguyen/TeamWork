@@ -9,6 +9,7 @@ import ViewProduct from "../Admin/ProductManager/View/ViewProduct";
 import EditProduct from "../Admin/ProductManager/EditProduct/EditProduct";
 import { UserContext } from "../context/UserContext";
 import AccessDenied from "./AccessDenied";
+import OrderManagement from "../Admin/OrderManagement/OrderManagement";
 
 const HomeAdmin = lazy(() => import("../Admin/HomeAdmin/HomeAdmin"));
 
@@ -62,6 +63,11 @@ function AdminRoutes() {
           path="/homeAdmin/customerManager"
           element={role === 4 ? <CustomerManagement /> : <AccessDenied />}
         />
+
+        {/* <Route
+          path="/homeAdmin/customerManager"
+          element={role === 4 ? <OrderManagement /> : <AccessDenied />}
+        /> */}
         <Route path="*" element={<Navigate to="/homeAdmin" />} />
       </Routes>
     </>
