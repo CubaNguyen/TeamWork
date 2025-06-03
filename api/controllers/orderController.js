@@ -23,7 +23,7 @@ const getOrderDetailController = async (req, res) => {
     const { id } = req.params;
 
     let data = await orderService.getOrderDetailService(id);
-    console.log("🚀 ~ getOrderDetailController ~ id:", id);
+
     return res.status(data.code).json({
       message: data.message,
       code: data.code,
@@ -47,7 +47,7 @@ const updateOrderStatusController = async (req, res) => {
     console.log("🚀 ~ updateOrderStatusController ~ status:", status);
 
     let data = await orderService.updateOrderStatusService(id, status);
-    return res.status(data.code).json({
+    return res.status(200).json({
       message: data.message,
       code: data.code,
       data: data.data,
@@ -62,8 +62,135 @@ const updateOrderStatusController = async (req, res) => {
   }
 };
 
+const getCartUserController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    let data = await orderService.getCartUserService(id);
+
+    return res.status(200).json({
+      message: data.message,
+      code: data.code,
+      data: data.data,
+    });
+  } catch (err) {
+    console.log("🚀 ~ getOrderUserController ~ err:", err);
+    return res.status(500).json({
+      message: "Lỗi từ hệ thống",
+      code: 500,
+      data: "",
+    });
+  }
+};
+
+const addToCartController = async (req, res) => {
+  try {
+    const product = req.body;
+    let data = await orderService.addToCartService(product);
+
+    return res.status(200).json({
+      message: data.message,
+      code: data.code,
+      data: data.data,
+    });
+  } catch (err) {
+    console.log("🚀 ~ addToCartController ~ err:", err);
+    return res.status(500).json({
+      message: "Lỗi từ hệ thống",
+      code: 500,
+      data: "",
+    });
+  }
+};
+
+const deleteCartController = async (req, res) => {
+  try {
+    const { order_id, product_id } = req.body;
+
+    let data = await orderService.deleteCartService(order_id, product_id);
+
+    return res.status(200).json({
+      message: data.message,
+      code: data.code,
+      data: data.data,
+    });
+  } catch (err) {
+    console.log("🚀 ~ deleteCartController ~ err:", err);
+    return res.status(500).json({
+      message: "Lỗi từ hệ thống",
+      code: 500,
+      data: "",
+    });
+  }
+};
+
+const statusAfterPaymentController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    let data = await orderService.statusAfterPaymentService(id);
+    return res.status(200).json({
+      message: data.message,
+      code: data.code,
+      data: data.data,
+    });
+  } catch (err) {
+    console.log("🚀 ~ updateOrderStatusController ~ err:", err);
+    return res.status(500).json({
+      message: "Lỗi từ hệ thống",
+      code: 500,
+      data: "",
+    });
+  }
+};
+
+const getOrderDetailUserController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    let data = await orderService.getOrderDetailUserService(id);
+
+    return res.status(data.code).json({
+      message: data.message,
+      code: data.code,
+      data: data.data,
+    });
+  } catch (err) {
+    console.log("🚀 ~ getOrderDetailUserController ~ err:", err);
+    return res.status(500).json({
+      message: "Lỗi từ hệ thống",
+      code: 500,
+      data: "",
+    });
+  }
+};
+const getRevenueController = async (req, res) => {
+  try {
+    let data = await orderService.getRevenueService();
+
+    return res.status(data.code).json({
+      message: data.message,
+      code: data.code,
+      data: data.data,
+    });
+  } catch (err) {
+    console.log("🚀 ~ getRevenueController ~ err:", err);
+    return res.status(500).json({
+      message: "Lỗi từ hệ thống",
+      code: 500,
+      data: "",
+    });
+  }
+};
+
 module.exports = {
   getAllOrdersController,
   getOrderDetailController,
   updateOrderStatusController,
+  getCartUserController,
+  addToCartController,
+  deleteCartController,
+  statusAfterPaymentController,
+  getOrderDetailUserController,
+  getRevenueController,
 };

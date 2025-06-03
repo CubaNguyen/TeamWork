@@ -6,6 +6,7 @@ import { deleteProduct, getAllProduct } from "../../services/productService";
 
 const ProductManager = () => {
   const [products, setProducts] = useState([]);
+  console.log("🚀 ~ ProductManager ~ products:", products);
 
   // Lấy danh sách sản phẩm & danh mục
 
@@ -20,6 +21,7 @@ const ProductManager = () => {
       console.log("🚀 ~ handleGetAllProduct ~ handleGetAllProduct:", error);
     }
   };
+
   const deleteProductbyId = async (id) => {
     try {
       const res = await deleteProduct(id);

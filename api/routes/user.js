@@ -1,21 +1,39 @@
-const router = require('express').Router()
-const userController = require('../controllers/userController')
-const verifyToken = require("../middleware/verifyToken"); // Import middleware
-
-// profile users
-// router.get("/getProfile", verifyToken, userController.getProfileController); // Chặn nếu không có token
+const router = require("express").Router();
+const userController = require("../controllers/userController");
+const verifyToken = require("../middleware/verifyToken");
+const verifyRoles = require("../middleware/verifyRoles");
 
 // xem danh sách khách hàng
-router.get('/getAll', userController.getAllUsersController)
+router.get(
+  "/getAll",
+  verifyToken,
+  verifyRoles([1, 4]),
+  userController.getAllUsersController
+);
 //khóa hoặc mở tài khoản khách hàng
-router.put("/status/:id", userController.updateUserStatusController)
+router.put(
+  "/status/:id",
+  verifyToken,
+  verifyRoles([1, 4]),
+  userController.updateUserStatusController
+);
 // ttin chi tiết user và lịch sử mua hàng
-router.put("/detail/:userId", userController.detailUserAndHistoryOrderController)
+router.get(
+  "/detail/:userId",
+  verifyToken,
+  verifyRoles([1, 4]),
+  userController.detailUserAndHistoryOrderController
+);
 // tièm user qa tên, số điện thoạithoại
 router.get("/search", userController.searchUserByNameAndPhoneController);
 // thêm address
-router.put("/update-address", userController.updateUserAddressController);
+router.put(
+  "/update-address",
+  verifyToken,
+  verifyRoles([5]),
+  userController.updateUserAddressController
+);
+// profile người dùng
+router.get("/getProfile", verifyToken, userController.getProfileController);
 
-
-
-module.exports = router
+module.exports = router;

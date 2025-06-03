@@ -1,6 +1,8 @@
 .product-detail-container {
   max-width: 600px;
-  height: 70vh;
+  // height: 70vh;
+  height: 100vh;
+
   margin: 50px auto;
   padding: 20px;
   background-color: #222; // Nền tối
@@ -16,7 +18,7 @@
 
   .product-image {
     width: 100%;
-    max-width: 400px;
+    max-width: 300px;
     height: auto;
     border-radius: 8px;
     margin-bottom: 20px;

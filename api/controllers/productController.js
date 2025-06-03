@@ -3,7 +3,7 @@ const productService = require("../services/productService");
 const getAllProductsController = async (req, res) => {
   try {
     let data = await productService.getAllProductsService();
-    return res.status(data.code).json({
+    return res.status(200).json({
       message: data.message,
       code: data.code,
       data: data.data,
@@ -21,8 +21,9 @@ const getProductDetailController = async (req, res) => {
   try {
     const { productId } = req.params;
     let data = await productService.getProductDetailService(productId);
+    console.log("🚀 ~ getProductDetailController ~ productId:", productId);
 
-    return res.status(data.code).json({
+    return res.status(200).json({
       message: data.message,
       code: data.code,
       data: data.data,
@@ -39,10 +40,9 @@ const getProductDetailController = async (req, res) => {
 
 const addProductController = async (req, res) => {
   try {
-    console.log("🚀 ~ addProductController ~ req.body:", req.body);
     let data = await productService.addProductService(req.body);
 
-    return res.status(data.code).json({
+    return res.status(200).json({
       message: data.message,
       code: data.code,
       data: data.data,
@@ -80,7 +80,7 @@ const deleteProductController = async (req, res) => {
   try {
     const { id } = req.params;
     let data = await productService.deleteProductService(id);
-    return res.status(data.code).json({
+    return res.status(200).json({
       message: data.message,
       code: data.code,
       data: data.data,
@@ -95,10 +95,57 @@ const deleteProductController = async (req, res) => {
   }
 };
 
+const getAllProductsWithoutAccessoriesController = async (req, res) => {
+  try {
+    const condition = req.body;
+    const { categoryId } = req.body;
+    const activeSortKeys = Object.entries(condition)
+      .filter(([key, value]) => key !== "priceRange" && value === true)
+      .map(([key]) => key);
+    const priceRange = condition.priceRange;
+    let data = await productService.getAllProductsWithoutAccessoriesService({
+      activeSortKeys,
+      priceRange,
+      categoryId,
+    });
+    return res.status(200).json({
+      message: data.message,
+      code: data.code,
+      data: data.data,
+    });
+  } catch (err) {
+    console.log("🚀 ~ getAllProductsWithoutAccessoriesController ~ err:", err);
+    return res.status(500).json({
+      message: "Lỗi từ hệ thống",
+      code: 500,
+      data: "",
+    });
+  }
+};
+
+const getNewestProductsController = async (req, res) => {
+  try {
+    let data = await productService.getNewestProductsService();
+    return res.status(200).json({
+      message: data.message,
+      code: data.code,
+      data: data.data,
+    });
+  } catch (err) {
+    console.log("🚀 ~ getNewestProductsController ~ err:", err);
+    return res.status(500).json({
+      message: "Lỗi từ hệ thống",
+      code: 500,
+      data: "",
+    });
+  }
+};
 module.exports = {
   getAllProductsController,
   getProductDetailController,
   addProductController,
   editProductController,
   deleteProductController,
+  getAllProductsWithoutAccessoriesController,
+  getNewestProductsController,
 };

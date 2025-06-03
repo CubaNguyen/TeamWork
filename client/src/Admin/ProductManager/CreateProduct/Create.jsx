@@ -10,7 +10,7 @@ const Create = () => {
   const [values, setValues] = useState({
     name: "",
     price: "",
-    image: "testtt",
+    image: "",
     description: "",
     category_id: "",
     stock: "",
@@ -45,6 +45,8 @@ const Create = () => {
       console.log("🚀 ~ addProductt ~ res:", res);
       if (res.data.code === 201) {
         navigate("/homeAdmin/productManager");
+      } else {
+        alert(res.data.message);
       }
     } catch (error) {
       console.log("🚀 ~ addProductt ~ addProductt:", error);
@@ -125,7 +127,7 @@ const Create = () => {
 
         <div>
           <label>Hình ảnh:</label>
-          <input
+          {/* <input
             type="file"
             accept="image/*"
             className="form-control"
@@ -133,7 +135,13 @@ const Create = () => {
           />
           {preview && (
             <img src={preview} alt="Preview" className="image-preview" />
-          )}
+          )} */}
+          <input
+            type="text"
+            name="image"
+            className="form-control"
+            onChange={(e) => setValues({ ...values, image: e.target.value })}
+          />
         </div>
 
         <div>

@@ -13,10 +13,16 @@ import Login from "../pages/Login/Login";
 import Account from "../pages/Account/Account";
 import Register from "../pages/Register/Register";
 import EditAddress from "../pages/EditAddress/EditAddress";
+import Checkout from "../pages/Checkout/Checkout";
 
+import SilverBracelet from "../pages/FourCollection/SilverBracelet/SilverBracelet";
+import SilverChain from "../pages/FourCollection/SilverChain/SilverChain";
+import SilverEarring from "../pages/FourCollection/SilverEarring/SilverEarring";
+import SilverRing from "../pages/FourCollection/SilverRing/SilverRing";
+import Search from "../pages/Search/Search";
+import Success from "../pages/Checkout/Success/Success";
 const Home = lazy(() => import("../pages/Home/Home"));
 const Products = lazy(() => import("../pages/Products"));
-const Cart = lazy(() => import("../pages/Cart"));
 
 const CustomerRoutes = () => {
   return (
@@ -25,14 +31,23 @@ const CustomerRoutes = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
-        <Route path="/global" element={<Global />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
 
         <Route path="/holidayGift" element={<Gift />} />
-        <Route path="/cart" element={<Cart />} />
+        {/* <Route path="/cart" element={<Cart />} /> */}
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/checkout/success" element={<Success />} />
+
         <Route path="/collections/accessories" element={<Accessories />} />
         <Route path="/ourCollections/" element={<OurCollection />} />
+        <Route path="/search" element={<Search />} />
+
+        <Route path="/collections/nhan-bac" element={<SilverRing />} />
+        <Route path="/collections/vong-tay-bac" element={<SilverBracelet />} />
+        <Route path="/collections/khuyen-tai-bac" element={<SilverEarring />} />
+        <Route path="/collections/day-chuyen-bac" element={<SilverChain />} />
+
         <Route path="/allproduct" element={<AllProducts />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

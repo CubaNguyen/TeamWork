@@ -131,10 +131,10 @@ const OrderList = ({ onView }) => {
         <tbody>
           {currentOrders.map((order) => (
             <tr key={order.id}>
-              <td>{order.id}</td>
-              <td>{order.User.username}</td>
-              <td>{order.order_date}</td>
-              <td>{order.total}</td>
+              <td>{order?.id}</td>
+              <td>{order?.User.username}</td>
+              <td>{order?.order_date}</td>
+              <td>{order?.total}</td>
               <td>
                 {order.editing ? (
                   <select

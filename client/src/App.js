@@ -9,11 +9,12 @@ import CustomerRoutes from "./routes/CustomerRoutes";
 import NavAdmin from "./Admin/NavAdmin/NavAdmin";
 import { UserContext } from "./context/UserContext";
 import { useContext } from "react";
+import ScrollToTop from "./utils/ScrollToTop";
 
 function App() {
   const user = useContext(UserContext);
 
-  // console.log("🚀 ~ App ~ user:", user)
+  // console.log("🚀 ~ App ~ user:", user);
 
   const roleId = user?.user?.role_id ?? "";
   const isAdmin = [1, 2, 3, 4].includes(roleId);
@@ -22,6 +23,7 @@ function App() {
   return (
     <div className="container">
       <Router>
+        <ScrollToTop />
         <div className="navbar">{isAdmin ? <NavAdmin /> : <Navbar />}</div>
         <div className="content">
           {isAdmin ? <AdminRoutes /> : <CustomerRoutes />}

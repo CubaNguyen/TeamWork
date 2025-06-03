@@ -3,6 +3,7 @@ import "./OrderDetails.scss";
 import { getDetailOrder } from "../../../services/orderService";
 
 const OrderDetails = ({ order, onBack }) => {
+  console.log("🚀 ~ OrderDetails ~ order:", order);
   const [orderDetail, setOrderDetail] = useState([]);
   const getDetails = async (id) => {
     try {
@@ -121,19 +122,19 @@ const OrderDetails = ({ order, onBack }) => {
               <strong>
                 &#8226; <span style={{ paddingLeft: "10px" }}>Email:</span>
               </strong>{" "}
-              {order?.User.email}
+              {order?.User?.email}
             </p>
             <p style={{ paddingLeft: "10px" }}>
               <strong>
                 &#8226; <span style={{ paddingLeft: "10px" }}>SĐT:</span>
               </strong>{" "}
-              {order?.User.phone}
+              {order?.User?.phone}
             </p>
             <p style={{ paddingLeft: "10px" }}>
               <strong>
                 &#8226; <span style={{ paddingLeft: "10px" }}>Địa chỉ:</span>
               </strong>{" "}
-              {order?.address ? order.address : "..."}
+              {order?.address ? order?.address : "..."}
             </p>
           </div>
         </div>

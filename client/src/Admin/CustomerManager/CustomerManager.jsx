@@ -1,32 +1,69 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./CustomerManager.scss";
-
-const initialCustomers = [
-  { id: 1, username: "Đang Van Chuong", email: "a@gmail.com", phone: "0987654321", address: "123 ABC", status: "active" },
-  { id: 2, username: "Vu Thanh Đat", email: "b@gmail.com", phone: "0978123456", address: "456 XYZ", status: "locked" },
-  { id: 3, username: "Phan Cong Hoai", email: "b@gmail.com", phone: "0978123456", address: "456 XYZ", status: "locked" },
-  { id: 4, username: "Nguyen Ngoc Can", email: "b@gmail.com", phone: "0978123456", address: "456 XYZ", status: "locked" },
-  { id: 5, username: "Nguyen Huynh Duc", email: "b@gmail.com", phone: "0978123456", address: "456 XYZ", status: "locked" },
-  { id: 6, username: "Nguyen Gia HUy", email: "b@gmail.com", phone: "0978123456", address: "456 XYZ", status: "locked" },
-  
-];
+import { getAllUser, updateUserStatus } from "../../services/userService";
+import { NavLink } from "react-router-dom";
 
 const CustomerManagement = () => {
-  const [customers, setCustomers] = useState(initialCustomers);
+  const [customers, setCustomers] = useState([]);
+  // console.log("🚀 ~ CustomerManagement ~ customers:", customers);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
 
-  const toggleStatus = (id) => {
-    setCustomers(customers.map(customer =>
-      customer.id === id ? { ...customer, status: customer.status === "active" ? "locked" : "active" } : customer
-    ));
+  const toggleStatus = async (customer) => {
+    console.log("🚀 ~ toggleStatus ~ id:", customer);
+    // customer.status = customer.status === "Hoạt động" ? "Đã khóa" : "Hoạt động";
+    await updateStatus(
+      customer.id,
+      customer.status === "Hoạt động" ? "Đã khóa" : "Hoạt động"
+    );
+    // setCustomers(
+    //   customers.map((customer) =>
+    //     customer.id === id
+    //       ? {
+    //           ...customer,
+    //           // status: customer.status === "active" ? "locked" : "active",
+    //           status: customer.status === "active" ? "Đã khóa" : "Hoạt động",
+    //         }
+    //       : customer
+    //   )
+
+    // );
   };
 
-  const filteredCustomers = customers.filter(customer => 
-    (filter === "all" || customer.status === filter) &&
-    (customer.username.includes(search) || customer.username.includes(search) || customer.phone.includes(search))
+  const filteredCustomers = customers.filter(
+    (customer) =>
+      (filter === "all" || customer.status === filter) &&
+      (customer?.username.includes(search) ||
+        customer?.username.includes(search) ||
+        customer?.phone.includes(search))
   );
 
+  const getAllUsers = async () => {
+    try {
+      const res = await getAllUser();
+
+      if (res.data.code === 201) {
+        setCustomers(res.data.data);
+      }
+    } catch (error) {
+      console.log("🚀 ~ getAllUsers ~ error:", error);
+    }
+  };
+  const updateStatus = async (id, status) => {
+    try {
+      const res = await updateUserStatus(id, status);
+      console.log("🚀 ~ updateStatus ~ res:", res);
+
+      if (res.data.code === 200) {
+        getAllUsers();
+      }
+    } catch (error) {
+      console.log("🚀 ~ updateStatus ~ error:", error);
+    }
+  };
+  useEffect(() => {
+    getAllUsers();
+  }, []);
   return (
     <div className="customer-management">
       <h1>Quản lý Khách hàng</h1>
@@ -38,10 +75,11 @@ const CustomerManagement = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+        <>Nhấn vào tên để xem thông tin chi tiết</>
         <select value={filter} onChange={(e) => setFilter(e.target.value)}>
           <option value="all">Tất cả</option>
-          <option value="active">Hoạt động</option>
-          <option value="locked">Đã khóa</option>
+          <option value="Hoạt động">Hoạt động</option>
+          <option value="Đã khóa">Đã khóa</option>
         </select>
       </div>
 
@@ -61,16 +99,31 @@ const CustomerManagement = () => {
           {filteredCustomers.map((customer) => (
             <tr key={customer.id}>
               <td>{customer.id}</td>
-              <td>{customer.username}</td>
-              <td>{customer.email}</td>
-              <td>{customer.phone}</td>
-              <td>{customer.address}</td>
-              <td className={customer.status}>
-                {customer.status === "active" ? "✅ Hoạt động" : "❌ Đã khóa"}
+              <td>
+                <NavLink
+                  style={{ textDecoration: "none", color: "white" }}
+                  exact
+                  to={`/homeAdmin/productMacustomerManagernager/detail/${customer.id}`}
+                >
+                  {" "}
+                  {customer.username}
+                </NavLink>
+              </td>
+              <td>{customer?.email}</td>
+              <td>{customer?.phone}</td>
+              <td>{customer?.address}</td>
+              <td className={customer?.status}>
+                {/* {customer.status === "Hoạt động" ? "Hoạt động" : "Đã khóa"} */}
+                {customer.status}
               </td>
               <td>
-                <button onClick={() => toggleStatus(customer.id)} className={customer.status}>
-                  {customer.status === "active" ? "🔒 Khóa" : "🔓 Mở khóa"}
+                <button
+                  // onClick={() => toggleStatus(customer?.id)}
+                  onClick={() => toggleStatus(customer)}
+                  className={customer?.status}
+                >
+                  {/* {customer.status === "active" ? "🔒 Khóa" : "🔓 Mở khóa"} */}
+                  {customer.status === "Hoạt động" ? "🔒 Khóa" : "🔓 Mở khóa"}
                 </button>
               </td>
             </tr>

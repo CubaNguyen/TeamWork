@@ -25,10 +25,11 @@ const Order = sequelize.define(
     status: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: "Chờ xác nhận",
+      defaultValue: "Đang chọn hàng",
       validate: {
         isIn: [
           [
+            "Đang chọn hàng",
             "Chờ xác nhận",
             "Đã xác nhận",
             "Đang giao hàng",

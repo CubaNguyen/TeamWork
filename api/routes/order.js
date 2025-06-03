@@ -1,13 +1,70 @@
-const router = require('express').Router()
-const orderController = require('../controllers/orderController')
+const router = require("express").Router();
+const orderController = require("../controllers/orderController");
+const verifyRoles = require("../middleware/verifyRoles");
+const verifyToken = require("../middleware/verifyToken");
 
 // // xem danh sách đơn hàng
-router.get("/getAllOrders", orderController.getAllOrdersController);
+router.get(
+  "/getAllOrders",
+  verifyToken,
+  verifyRoles([1, 3]),
+  orderController.getAllOrdersController
+);
 // Xem chi tiết đơn hàng
-router.get("/:id", orderController.getOrderDetailController);
+router.get(
+  "/:id",
+  verifyToken,
+  verifyRoles([1, 3]),
+  orderController.getOrderDetailController
+);
 // Cập nhật trạng thái đơn hàng
-router.put("/:id/status", orderController.updateOrderStatusController);
+router.put(
+  "/:id/status",
+  verifyToken,
+  verifyRoles([1, 3]),
+  orderController.updateOrderStatusController
+);
+// Xem chi tiết giỏ hàng người dùng
+router.get(
+  "/userCart/:id",
+  verifyToken,
+  verifyRoles([5]),
+  orderController.getCartUserController
+);
+// thêm sản phẩm vào giỏ hàng
+router.post(
+  "/add",
+  verifyToken,
+  verifyRoles([5]),
+  orderController.addToCartController
+);
+// xóa sản phẩm trong giỏ hàng
+router.delete(
+  "/delete",
+  verifyToken,
+  verifyRoles([5]),
+  orderController.deleteCartController
+);
+// Cập nhật trạng thái đơn hàng sau khi thanh toán
+router.put(
+  "/:id/statusAfterPayment",
+  verifyToken,
+  verifyRoles([5]),
+  orderController.statusAfterPaymentController
+);
+// Xem chi tiết đơn hàng user
+router.get(
+  "/user/:id",
+  verifyToken,
+  verifyRoles([5]),
+  orderController.getOrderDetailUserController
+);
 
-
-
-module.exports = router
+// Cập nhật trạng thái đơn hàng
+router.get(
+  "/reports/revenue",
+  verifyToken,
+  verifyRoles([1]),
+  orderController.getRevenueController
+);
+module.exports = router;

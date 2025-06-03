@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Product = require("../models/Product");
 const Category = require("../models/Category");
 // require("../models/AssociationsRelationship")();
+const { Op } = require("sequelize");
 
 const getAllProductsService = async () => {
   try {
@@ -61,7 +62,7 @@ const getProductDetailService = async (productId) => {
 const addProductService = async (data) => {
   console.log("🚀 ~ addProductService ~ data:", data);
   try {
-    if (!data.name || !data.price || !data.image || data.stock) {
+    if (!data.name || !data.price || !data.image || !data.stock) {
       return { code: 400, message: "Thiếu thông tin sản phẩm!", data: null };
     }
 
@@ -124,11 +125,119 @@ const deleteProductService = async (id) => {
     };
   }
 };
+const getAllProductsWithoutAccessoriesService = async ({
+  activeSortKeys,
+  priceRange,
+  categoryId,
+}) => {
+  try {
+    const MAX_PRICE = 10_000_000;
+    const min = priceRange?.min >= 0 ? Number(priceRange.min) : 0;
+    const max =
+      priceRange?.max <= MAX_PRICE ? Number(priceRange.max) : MAX_PRICE;
 
+    let order = [];
+    const sortMap = {
+      alphabetAZ: ["name", "ASC"],
+      alphabetZA: ["name", "DESC"],
+      priceAsc: ["price", "ASC"],
+      priceDesc: ["price", "DESC"],
+      dateOld: ["createdAt", "ASC"],
+      dateNew: ["createdAt", "DESC"],
+    };
+
+    for (const key of activeSortKeys || []) {
+      if (sortMap[key]) order.push(sortMap[key]);
+    }
+
+    const whereCondition = {
+      price: {
+        [Op.gte]: min,
+        [Op.lte]: max,
+      },
+    };
+
+    if (categoryId !== undefined) {
+      if (categoryId === 9) {
+        whereCondition.category_id = 9; // Nếu id = 9 => chỉ lấy phụ kiện
+      } else {
+        whereCondition.category_id = categoryId; // id khác 9 => lấy đúng danh mục
+      }
+    } else {
+      whereCondition.category_id = { [Op.ne]: 9 }; // Không truyền => lấy tất cả trừ phụ kiện
+    }
+
+    const products = await Product.findAll({
+      where: whereCondition,
+      order,
+      include: [
+        {
+          model: Category,
+          attributes: ["name"],
+        },
+      ],
+    });
+
+    if (!products || products.length === 0) {
+      return { code: 404, message: "Không có sản phẩm nào!", data: [] };
+    }
+    return {
+      message: "Lấy danh sách sản phẩm thành công!",
+      code: 201,
+      data: products,
+    };
+  } catch (err) {
+    console.log("🚀 ~ getAllProductsWithoutAccessoriesService ~ err:", err);
+    return {
+      message: "Lỗi từ hệ thống",
+      code: 500,
+      data: "",
+    };
+  }
+};
+
+const getNewestProductsService = async () => {
+  try {
+    const products = await Product.findAll({
+      where: {
+        status: {
+          [Op.eq]: "Active",
+        },
+      },
+      include: [
+        {
+          model: Category,
+          attributes: ["name"],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+      limit: 10,
+    });
+    // const newproducts = products.filter((p) => p.status === "Active");
+
+    if (!products || products.length === 0) {
+      return { code: 404, message: "Không có sản phẩm nào!", data: [] };
+    }
+    return {
+      message: "Lấy 10 sản phẩm mới nhất thành công!",
+      code: 201,
+      data: products,
+    };
+  } catch (err) {
+    console.log("🚀 ~ getNewestProductsService ~ err:", err);
+    return {
+      message: "Lỗi từ hệ thống",
+      code: 500,
+      data: "",
+    };
+  }
+};
 module.exports = {
   getAllProductsService,
   getProductDetailService,
   addProductService,
   editProductService,
   deleteProductService,
+  getAllProductsWithoutAccessoriesService,
+  getNewestProductsService,
 };
