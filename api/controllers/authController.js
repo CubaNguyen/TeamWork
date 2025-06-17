@@ -63,7 +63,7 @@ const loginController = async (req, res) => {
         .json({ message: "Thiếu email hoặc mật khẩu!", code: 400 });
     }
     let data = await authService.loginService(email, password);
-    return res.status(data.code).json({
+    return res.status(200).json({
       message: data.message,
       code: data.code,
       data: data.data,

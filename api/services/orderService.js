@@ -3,12 +3,23 @@ const Order = require("../models/Order");
 const Product = require("../models/Product");
 const OrderDetail = require("../models/OrderDetail");
 const Category = require("../models/Category");
-
+const moment = require("moment");
 const { Op, where } = require("sequelize");
 
-const getAllOrdersService = async () => {
+const getAllOrdersService = async (condition) => {
   try {
+    let whereCondition = {};
+
+    if (condition === "Đã giao hàng") {
+      whereCondition.status = "Đã giao hàng";
+    } else {
+      whereCondition.status = {
+        [Op.ne]: "Đã giao hàng", // Tất cả trừ "Đã giao hàng"
+      };
+    }
+
     const orders = await Order.findAll({
+      where: whereCondition,
       include: [
         {
           model: User,
@@ -56,7 +67,7 @@ const getOrderDetailService = async (orderId) => {
     });
 
     if (!order) {
-      console.log("❌ Không tìm thấy đơn hàng!");
+      console.log("Không tìm thấy đơn hàng!");
 
       return { code: 201, message: "Không tìm thấy đơn hàng!", data: "" };
     }
@@ -153,7 +164,10 @@ const addToCartService = async (data) => {
     const { user_id, product_id, quantity, price } = data;
 
     if (!user_id || !product_id || !quantity || !price) {
-      return res.status(400).json({ message: "thiếu data" });
+      return {
+        code: 400,
+        message: "Thiếu dữ liệu đầu vào",
+      };
     }
     let order = await Order.findOne({
       where: {
@@ -216,6 +230,48 @@ const addToCartService = async (data) => {
     };
   } catch (err) {
     console.log("🚀 ~ addToCartService ~ err:", err);
+    return {
+      message: "Lỗi từ hệ thống",
+      code: 500,
+      data: "",
+    };
+  }
+};
+
+const quickBuyService = async (product, address) => {
+  try {
+    const { user_id, product_id, quantity, price } = product;
+
+    if (!user_id || !product_id || !quantity || !price) {
+      return {
+        code: 400,
+        message: "Thiếu dữ liệu đầu vào",
+      };
+    }
+
+    let order = await Order.create({
+      user_id,
+      total: quantity * price, // Tổng sẽ được tính sau
+      status: "Chờ xác nhận",
+      address: address, // Có thể bỏ trống hoặc điền sau
+    });
+    let DetailOrder = await OrderDetail.create({
+      order_id: order.id,
+      product_id,
+      quantity,
+      price,
+    });
+
+    return {
+      message: "thêm đơn hàng thành công!",
+      code: 201,
+      data: {
+        order,
+        DetailOrder,
+      },
+    };
+  } catch (err) {
+    console.log("🚀 ~ quickBuyService ~ err:", err);
     return {
       message: "Lỗi từ hệ thống",
       code: 500,
@@ -323,7 +379,7 @@ const deleteCartService = async (order_id, product_id) => {
   }
 };
 
-const statusAfterPaymentService = async (orderId) => {
+const statusAfterPaymentService = async (orderId, address) => {
   try {
     const order = await Order.findByPk(orderId);
 
@@ -334,6 +390,7 @@ const statusAfterPaymentService = async (orderId) => {
       return res.status(400).json({ message: "Đơn hàng không thể thanh toán" });
     }
     order.status = "Chờ xác nhận";
+    order.address = address;
     await order.save();
     return {
       message: "Thanh toán thành công, đơn hàng đang chờ xác nhận",
@@ -419,6 +476,61 @@ const getRevenueService = async () => {
   }
 };
 
+const getAllOrdersByDateService = async (filter) => {
+  try {
+    let whereClause = {};
+
+    const now = moment();
+    if (filter === "day") {
+      const startDate = moment().subtract(6, "days").startOf("day"); // 7 ngày gần nhất (hôm nay + 6 ngày trước)
+      const endDate = moment().endOf("day");
+
+      whereClause.order_date = {
+        [Op.between]: [startDate.toDate(), endDate.toDate()],
+      };
+    } else if (filter === "month") {
+      const startDate = moment().subtract(11, "months").startOf("month"); // 12 tháng gần nhất
+      const endDate = moment().endOf("month");
+
+      whereClause.order_date = {
+        [Op.between]: [startDate.toDate(), endDate.toDate()],
+      };
+    } else if (filter === "year") {
+      // Không cần điều kiện - lấy tất cả
+    }
+
+    const orders = await Order.findAll({
+      where: whereClause,
+      attributes: ["order_date", "total", "status"],
+      include: [
+        {
+          model: Product,
+          attributes: ["id", "name", "price", "image"],
+
+          through: {
+            attributes: ["quantity", "price"], // từ OrderDetail
+          },
+        },
+      ],
+    });
+    if (orders.length === 0) {
+      return { code: 404, message: "Không có đơn hàng nào!", data: [] };
+    }
+    return {
+      message: "Lấy danh sách đơn hàng thành công!",
+      code: 201,
+      data: orders,
+    };
+  } catch (err) {
+    console.log("🚀 ~ getAllOrdersByDateService ~ err:", err);
+    return {
+      message: "Lỗi từ hệ thống",
+      code: 500,
+      data: "",
+    };
+  }
+};
+
 module.exports = {
   getAllOrdersService,
   getOrderDetailService,
@@ -429,4 +541,6 @@ module.exports = {
   statusAfterPaymentService,
   getOrderDetailUserService,
   getRevenueService,
+  getAllOrdersByDateService,
+  quickBuyService,
 };

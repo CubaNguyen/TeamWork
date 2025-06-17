@@ -7,6 +7,7 @@ import { NavLink } from "react-router-dom";
 const PopUpCart = ({ show, onClose }) => {
   const { cart, order, deleteCartContext, fetchCartContext } =
     useContext(CartContext);
+  const [carts, setCarts] = useState([]);
   const deleteProduct = async (item) => {
     let data = {
       product_id: item.id,
@@ -17,9 +18,12 @@ const PopUpCart = ({ show, onClose }) => {
       fetchCartContext();
     }
   };
+  console.log("🚀 ~ PopUpCart ~ cart:", cart);
 
   // if (!show) return null;
-
+  useEffect(() => {
+    setCarts(cart);
+  }, [cart]);
   return (
     <>
       <div className="quick-add-overlayyy"></div>
@@ -32,12 +36,12 @@ const PopUpCart = ({ show, onClose }) => {
           <div className="modal-content">
             <h2 className="cart-title">
               <span className="left">Shopping Cart</span>
-              <span className="right">{cart?.length} sản phẩm</span>
+              <span className="right">{carts?.length} sản phẩm</span>
             </h2>
             <hr style={{ width: "100%" }} />
 
             <div className="cart-items">
-              {cart?.map((item) => (
+              {carts?.map((item) => (
                 <div key={item?.id} className="cart-item">
                   <img
                     className="cart-item__image"

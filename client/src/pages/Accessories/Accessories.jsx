@@ -4,7 +4,7 @@ import "./Accessories.scss";
 import AllProducts from "../AllProducts/AllProducts";
 
 const Accessories = () => {
-  const categoryId = 9;
+  const categoryId = 14;
   const bannerData = {
     title: "ACCESSORIES",
     description: "",

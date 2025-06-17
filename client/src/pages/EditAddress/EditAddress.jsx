@@ -84,8 +84,8 @@ const EditAddress = () => {
               <a className="edit" onClick={() => setEdit(true)}>
                 Sửa
               </a>
-              <span className="divider">|</span>
-              <a className="delete">Xóa</a>
+              {/* <span className="divider">|</span> */}
+              {/* <a className="delete">Xóa</a> */}
             </>
           )}
         </div>

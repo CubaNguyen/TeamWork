@@ -1,12 +1,14 @@
+require("dotenv").config();
+
 module.exports = {
-    development: {
-        username: "sa",
-        password: "300304Cuba",
-        database: "helios",
-        host: "localhost",
-        dialect: "mssql",
-        dialectOptions: {
-            options: { encrypt: false } // Nếu có lỗi SSL
-        }
-    }
+  development: {
+    username: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT,
+    dialectOptions: {
+      options: { encrypt: false }, // Nếu có lỗi SSL
+    },
+  },
 };

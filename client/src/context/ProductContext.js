@@ -35,6 +35,10 @@ const ProductProvider = ({ children }) => {
     }
   };
   const allProductWithoutAccessoriesContext = async (condition) => {
+    console.log(
+      "🚀 ~ allProductWithoutAccessoriesContext ~ condition:",
+      condition
+    );
     try {
       setLoading(true);
       await delay(ms);

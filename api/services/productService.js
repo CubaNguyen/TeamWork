@@ -4,9 +4,18 @@ const Category = require("../models/Category");
 // require("../models/AssociationsRelationship")();
 const { Op } = require("sequelize");
 
-const getAllProductsService = async () => {
+const getAllProductsService = async (categoryId) => {
   try {
+    let whereCondition = {};
+
+    if (categoryId === "all") {
+      whereCondition = {};
+    } else if (typeof categoryId === "number") {
+      whereCondition.category_id = categoryId;
+    }
+
     const products = await Product.findAll({
+      where: whereCondition,
       include: [
         {
           model: Category,
@@ -158,13 +167,13 @@ const getAllProductsWithoutAccessoriesService = async ({
     };
 
     if (categoryId !== undefined) {
-      if (categoryId === 9) {
-        whereCondition.category_id = 9; // Nếu id = 9 => chỉ lấy phụ kiện
+      if (categoryId === 14) {
+        whereCondition.category_id = 14;
       } else {
-        whereCondition.category_id = categoryId; // id khác 9 => lấy đúng danh mục
+        whereCondition.category_id = categoryId;
       }
     } else {
-      whereCondition.category_id = { [Op.ne]: 9 }; // Không truyền => lấy tất cả trừ phụ kiện
+      whereCondition.category_id = { [Op.ne]: 14 }; // Không truyền => lấy tất cả trừ phụ kiện
     }
 
     const products = await Product.findAll({

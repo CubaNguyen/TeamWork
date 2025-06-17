@@ -25,7 +25,7 @@ const MainContent = () => {
   };
   const { newestProducts, getNewestProductContext } =
     useContext(ProductContext);
-  console.log("🚀 ~ MainContent ~ newestProducts:", newestProducts);
+  // console.log("🚀 ~ MainContent ~ newestProducts:", newestProducts);
 
   const items = newestProducts.map((product) => (
     <div className="item" data-value={product.id} key={product.id}>
@@ -39,7 +39,11 @@ const MainContent = () => {
             {product.price.toLocaleString()} VND
           </div>
         </div>
-        <button onClick={() => handleAddToCart(product)} className="chooseSize">
+        <button
+          style={{ cursor: "pointer" }}
+          onClick={() => handleAddToCart(product)}
+          className="chooseSize"
+        >
           Thêm nhanh
         </button>
       </div>

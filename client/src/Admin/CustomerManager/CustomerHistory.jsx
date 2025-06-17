@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./CustomerHistory.scss";
 import { getDetailUser } from "../../services/userService";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
 const OrderHistory = () => {
   // if (!customer) {
@@ -48,7 +48,7 @@ const OrderHistory = () => {
     getDetail(userId);
   }, []);
   return (
-    <div>
+    <div className="customerHistoryContainer">
       <h2>Lịch sử đơn hàng của {customer?.username}</h2>
       <ul className="customer-details">
         <li>
@@ -108,7 +108,16 @@ const OrderHistory = () => {
         </tbody>
       </table>
 
-      <button className="back-btn">Quay lại</button>
+      {/* <button className="back-btn">Quay lại</button> */}
+
+      <NavLink
+        className="back-btn"
+        style={{ textDecoration: "none", color: "white" }}
+        exact
+        to={`/homeAdmin/customerManager`}
+      >
+        Quay lại
+      </NavLink>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import api from "../utils/axiosConfig";
 
-const getAllProduct = () => api.get("/product/getAllProduct");
+const getAllProduct = (condition) =>
+  api.post("/product/getAllProduct", condition);
 const getAllProductWithoutAccessories = (condition) =>
   api.post("/product/getAllProductWithoutAccessories", condition);
 

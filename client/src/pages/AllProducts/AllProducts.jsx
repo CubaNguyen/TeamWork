@@ -129,7 +129,11 @@ const AllProducts = ({
         })
       : productsByCondition;
   const productsToDisplay = isSearch ? filtered : productsByCondition;
-  console.log("🚀 ~ AllProducts ~ productsToDisplay:", productsToDisplay);
+  // console.log("🚀 ~ AllProducts ~ productsToDisplay:", productsToDisplay);
+
+  const viewProduct = (product) => {
+    navigate(`/product/${product.name}`, { state: { product } });
+  };
 
   return (
     <div className="allProductsContainer">
@@ -208,7 +212,9 @@ const AllProducts = ({
           >
             <div className="text">Lọc bằng</div>
 
-            <span>{expanded["sortBy"] ? "-" : "+"}</span>
+            <span style={{ cursor: "pointer" }}>
+              {expanded["sortBy"] ? "-" : "+"}
+            </span>
           </div>
           {expanded["sortBy"] ? (
             <div className="checkboxChoice">
@@ -300,6 +306,9 @@ const AllProducts = ({
                 >
                   <div className="product-image">
                     <img
+                      onClick={() => {
+                        viewProduct(product);
+                      }}
                       className="img"
                       src={product.image}
                       alt={product.name}

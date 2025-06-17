@@ -4,7 +4,7 @@ const verifyRoles = require("../middleware/verifyRoles");
 const verifyToken = require("../middleware/verifyToken");
 
 // xem danh sách sản phẩm
-router.get(
+router.post(
   "/getAllProduct",
   verifyToken,
   verifyRoles([1, 2]),

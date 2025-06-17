@@ -124,7 +124,7 @@ function EditProduct() {
 
         <div>
           <label>Hình ảnh:</label>
-          <input
+          {/* <input
             type="file"
             accept="image/*"
             className="form-control"
@@ -132,7 +132,14 @@ function EditProduct() {
           />
           {preview && (
             <img src={preview} alt="Preview" className="image-preview" />
-          )}
+          )} */}
+          <input
+            type="text"
+            name="image"
+            value={product.image}
+            onChange={handleChange}
+            required
+          />
         </div>
 
         <div>

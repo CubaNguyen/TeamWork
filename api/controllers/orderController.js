@@ -2,7 +2,9 @@ const orderService = require("../services/orderService");
 
 const getAllOrdersController = async (req, res) => {
   try {
-    let data = await orderService.getAllOrdersService();
+    const condition = req.body;
+    let data = await orderService.getAllOrdersService(condition?.filter);
+
     return res.status(data.code).json({
       message: data.message,
       code: data.code,
@@ -103,6 +105,26 @@ const addToCartController = async (req, res) => {
   }
 };
 
+const quickBuyController = async (req, res) => {
+  try {
+    const { product, address } = req.body;
+    let data = await orderService.quickBuyService(product, address);
+
+    return res.status(200).json({
+      message: data.message,
+      code: data.code,
+      data: data.data,
+    });
+  } catch (err) {
+    console.log("🚀 ~ quickBuyService ~ err:", err);
+    return res.status(500).json({
+      message: "Lỗi từ hệ thống",
+      code: 500,
+      data: "",
+    });
+  }
+};
+
 const deleteCartController = async (req, res) => {
   try {
     const { order_id, product_id } = req.body;
@@ -127,8 +149,10 @@ const deleteCartController = async (req, res) => {
 const statusAfterPaymentController = async (req, res) => {
   try {
     const { id } = req.params;
+    let { address } = req.body;
+    console.log("🚀 ~ statusAfterPaymentController ~ address:", address);
 
-    let data = await orderService.statusAfterPaymentService(id);
+    let data = await orderService.statusAfterPaymentService(id, address);
     return res.status(200).json({
       message: data.message,
       code: data.code,
@@ -183,6 +207,25 @@ const getRevenueController = async (req, res) => {
   }
 };
 
+const getAllOrdersByDateController = async (req, res) => {
+  try {
+    const filter = req.query.filter;
+    console.log("🚀 ~ getAllOrdersByDateController ~ filter:", filter);
+    let data = await orderService.getAllOrdersByDateService(filter);
+    return res.status(data.code).json({
+      message: data.message,
+      code: data.code,
+      data: data.data,
+    });
+  } catch (err) {
+    console.log("🚀 ~ getAllOrdersByDateController ~ err:", err);
+    return res.status(500).json({
+      message: "Lỗi từ hệ thống",
+      code: 500,
+      data: "",
+    });
+  }
+};
 module.exports = {
   getAllOrdersController,
   getOrderDetailController,
@@ -193,4 +236,6 @@ module.exports = {
   statusAfterPaymentController,
   getOrderDetailUserController,
   getRevenueController,
+  getAllOrdersByDateController,
+  quickBuyController,
 };

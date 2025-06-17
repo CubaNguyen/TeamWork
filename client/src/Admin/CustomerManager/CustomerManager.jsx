@@ -103,7 +103,7 @@ const CustomerManagement = () => {
                 <NavLink
                   style={{ textDecoration: "none", color: "white" }}
                   exact
-                  to={`/homeAdmin/productMacustomerManagernager/detail/${customer.id}`}
+                  to={`/homeAdmin/customerManager/detail/${customer.id}`}
                 >
                   {" "}
                   {customer.username}

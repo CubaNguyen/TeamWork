@@ -9,176 +9,149 @@ import {
 } from "recharts";
 import "./SuperAdmin.scss";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { getRevenue } from "../../services/orderService";
+import { getAllOrdersByDate, getRevenue } from "../../services/orderService";
+import SalesChart from "../../components/SalesChart/SalesChart";
 const SuperAdmin = () => {
-  //     { date: "2024-01-01", price: 120 },
-  //     { date: "2024-01-02", price: 125 },
-  //     { date: "2024-01-03", price: 115 },
-  //     { date: "2024-01-04", price: 130 },
-  //     { date: "2024-01-05", price: 128 },
-  //     { date: "2024-01-06", price: 132 },
-  //     { date: "2024-01-07", price: 127 },
+  const [filter, setFilter] = useState("day");
+  const [salesByDate, setSalesByDate] = useState([]);
+  const [dataForChart, setDataForChart] = useState([]);
+  console.log("🚀 ~ SuperAdmin ~ dataForChart:", dataForChart);
 
-  //     { date: "2025-01-01", price: 120 },
-  //     { date: "2025-01-02", price: 125 },
-  //     { date: "2025-01-03", price: 115 },
-  //     { date: "2025-01-04", price: 130 },
-  //     { date: "2025-01-05", price: 128 },
-  //     { date: "2025-01-06", price: 132 },
-  //     { date: "2025-01-07", price: 127 },
-  //     // Tháng 3
-  //     { date: "2025-03-01", price: 110 },
-  //     { date: "2025-03-15", price: 115 },
-  //     { date: "2025-03-30", price: 118 },
+  console.log("🚀 ~ SuperAdmin ~ salesByDate:", salesByDate);
 
-  //     // Tháng 4
-  //     { date: "2025-04-01", price: 120 },
-  //     { date: "2025-04-15", price: 125 },
-  //     { date: "2025-04-30", price: 123 },
+  const handleFilterChange = async (e) => {
+    setFilter(e.target.value);
+    await getOrdersByDate(e.target.value);
+    // Gọi API hoặc cập nhật dữ liệu tùy theo lựa chọn
+  };
 
-  //     // Tháng 5
-  //     { date: "2025-05-01", price: 126 },
-  //     { date: "2025-05-15", price: 130 },
-  //     { date: "2025-05-30", price: 128 },
-
-  //     // Tháng 9
-  //     { date: "2025-09-01", price: 120 },
-  //     { date: "2025-09-02", price: 125 },
-  //     { date: "2025-09-03", price: 115 },
-  //     { date: "2025-09-04", price: 130 },
-  //     { date: "2025-09-05", price: 128 },
-  //     { date: "2025-09-06", price: 132 },
-  //     { date: "2025-09-07", price: 127 },
-  //   ];
-  const [rawData, setRawData] = useState([]);
-  console.log("🚀 ~ SuperAdmin ~ rawData:", rawData);
-  const getRevenues = async () => {
+  const getOrdersByDate = async (filter) => {
     try {
-      const res = await getRevenue();
-      if (res.data.code === 200) {
-        const rawData = res.data.data.map((item) => {
-          // Chuyển đổi order_date sang định dạng "YYYY-MM-DD"
-          const dateObject = new Date(item.order_date);
-          const formattedDate = dateObject.toISOString().split("T")[0]; // Sử dụng toISOString() để đảm bảo UTC day
-          return {
-            date: formattedDate,
-            price: item.total,
-          };
-        });
-        setRawData(rawData);
+      const res = await getAllOrdersByDate(filter);
+
+      if (res.data.code === 201) {
+        setSalesByDate(res.data.data);
+        const chartData = res.data.data
+          .filter((order) => order.status === "Đã giao hàng") // lọc đơn hàng đã giao
+          .map((order) => ({
+            date: new Date(order.order_date).toLocaleDateString("vi-VN"), // format ngày theo kiểu Việt Nam
+            total: order.total,
+          }));
+
+        setDataForChart(chartData);
       }
     } catch (error) {
-      console.log("🚀 ~ getRevenues ~ error:", error);
+      console.log("🚀 ~ getOrdersByDate ~ error:", error);
     }
   };
   useEffect(() => {
-    getRevenues();
+    getOrdersByDate(filter);
   }, []);
-  const aggregatedData = useMemo(() => {
-    const monthlyTotals = {};
-    const uniqueYears = new Set(); // Để lưu trữ các năm có trong dữ liệu
 
-    // Đầu tiên, tìm tất cả các năm có trong rawData
-    rawData?.forEach((item) => {
-      uniqueYears.add(item.date.substring(0, 4)); // Lấy "YYYY" từ "YYYY-MM-DD"
-    });
-
-    // Khởi tạo tất cả các tháng cho MỌI năm có trong uniqueYears với doanh thu 0
-    Array.from(uniqueYears)
-      .sort()
-      .forEach((year) => {
-        for (let i = 1; i <= 12; i++) {
-          const monthKey = `${year}-${i.toString().padStart(2, "0")}`; // VD: "2024-01", "2025-01"
-          monthlyTotals[monthKey] = {
-            monthLabel: `T${i}/${year.toString().substring(2)}`, // VD: "T1/24", "T1/25"
-            revenue: 0,
-          };
-        }
-      });
-
-    // Duyệt qua dữ liệu gốc và cộng dồn doanh thu vào các tháng tương ứng
-    rawData?.forEach((item) => {
-      const monthKey = item.date.substring(0, 7); // "YYYY-MM"
-      const price = parseFloat(item.price);
-
-      if (monthlyTotals[monthKey]) {
-        monthlyTotals[monthKey].revenue += price;
-      }
-    });
-
-    // Chuyển đổi object thành mảng và sắp xếp theo khóa tháng/năm để đảm bảo thứ tự
-    return Object.keys(monthlyTotals)
-      .sort() // Sắp xếp theo "YYYY-MM" để đảm bảo thứ tự thời gian
-      .map((key) => monthlyTotals[key]);
-  }, [rawData]);
-
-  // Điều chỉnh chiều rộng động: giờ nó sẽ dựa trên tổng số tháng của tất cả các năm
-  const columnWidth = 100; // Chiều rộng ước tính cho mỗi cột + khoảng cách
-  const minChartDisplayWidth = 800; // Chiều rộng tối thiểu mà biểu đồ sẽ hiển thị trước khi cuộn
-  const dynamicChartWidth = Math.max(
-    minChartDisplayWidth,
-    aggregatedData.length * columnWidth
+  const deliveredOrders = salesByDate.filter(
+    (salesByDate) => salesByDate.status === "Đã giao hàng"
   );
-  const scrollContainerRef = useRef(null);
+  const productStats = {};
 
-  // Sử dụng useEffect để cuộn đến cuối (phía năm gần nhất) sau khi render
-  useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollLeft =
-        scrollContainerRef.current.scrollWidth;
-    }
-  }, [aggregatedData]); // Cuộn lại khi dữ liệu tổng hợp thay đổi
+  salesByDate.forEach((order) => {
+    order.Products.forEach((p) => {
+      const { id, name, image } = p;
+      const quantity = p.OrderDetail.quantity;
 
+      if (!productStats[id]) {
+        productStats[id] = { id, name, image, totalQuantity: 0 };
+      }
+      productStats[id].totalQuantity += quantity;
+    });
+  });
+
+  const mostSold = Object.values(productStats).sort(
+    (a, b) => b.totalQuantity - a.totalQuantity
+  )[0];
+
+  const data = [
+    {
+      title: "Tổng đơn",
+      value: salesByDate?.length,
+      // change: "+14.3%",
+      // changeClass: "up",
+    },
+    {
+      title: "Đã giao thành công",
+      value: deliveredOrders.length,
+      // change: "-48.3%",
+      // changeClass: "down",
+    },
+
+    {
+      title: "Đơn ở trạng thái khác",
+      value: salesByDate?.length - deliveredOrders.length,
+      // change: "0%",
+      // changeClass: "neutral",
+    },
+    {
+      title: "Sản phẩm bán được nhiều nhất",
+      productName: mostSold?.name,
+      productImage: mostSold?.image,
+      quantity: mostSold?.totalQuantity,
+      // change: "0%",
+      // changeClass: "neutral",
+    },
+  ];
   return (
     <div className="superAdminContainer">
-      <h2 className="text-lg font-semibold mb-2">
-        Biểu đồ doanh thu theo tháng
-      </h2>
-      {rawData?.length == 0 ? (
-        <div>Chưa có doanh thu</div>
-      ) : (
-        <div className="chart">
-          <div
-            className="editScroll"
-            ref={scrollContainerRef}
-            style={{
-              height:
-                "calc(100% + 17px)" /* 17px là chiều cao điển hình của thanh cuộn trên Windows */,
-              overflowX: "auto",
-              overflowY: "hidden",
-            }}
-          >
-            <ResponsiveContainer width={dynamicChartWidth} height={400}>
-              <BarChart
-                data={aggregatedData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid stroke="#444" strokeDasharray="3 3" />
-                <XAxis dataKey="monthLabel" stroke="#fff" />
-                <YAxis
-                  unit="₫"
-                  stroke="#fff"
-                  // tickFormatter={(value) => `${(value / 1000000).toFixed(0)}tr`}
-                  tickFormatter={(value) => `${value.toLocaleString("vi-VN")} `}
-                />
-                <Tooltip
-                  contentStyle={{ backgroundColor: "#333", border: "none" }}
-                  labelStyle={{ color: "#fff" }}
-                  itemStyle={{ color: "#fff" }}
-                  // Định dạng giá trị tooltip để hiển thị tiền tệ
-                  formatter={(value) => `${value.toLocaleString("vi-VN")} ₫`}
-                />
-                <Bar
-                  dataKey="revenue" // dataKey bây giờ là "revenue"
-                  fill="#8884d8" // Màu của cột
-                  // Bạn có thể thêm animation nếu muốn
-                  // animationDuration={300}
-                />
-              </BarChart>
-            </ResponsiveContainer>
+      <div className="overview">
+        <div className="dashboard">
+          <div className="filter-bar">
+            <label htmlFor="timeFilter">📅 Bộ lọc:</label>
+            <select
+              className="select"
+              id="timeFilter"
+              value={filter}
+              onChange={handleFilterChange}
+              // style={{
+              //   color: "black",
+              //   backgroundColor: "#fab31f",
+              // }}
+            >
+              <option value="day">7 Ngày gần nhất</option>
+              <option value="month">12 Tháng gần nhất</option>
+              <option value="year">Các năm</option>
+            </select>
           </div>
+          {data.map((item, index) => (
+            <div className="card" key={index}>
+              <div className="title">{item.title}</div>
+
+              {item.productImage ? (
+                <div className="product">
+                  <img src={item.productImage} alt="product" />
+                  <div className="info">
+                    <div className="name">{item.productName}</div>
+                    <div className="quantity">{item.quantity}</div>
+                  </div>
+                </div>
+              ) : item.productName ? (
+                <>
+                  <div className="name">{item.productName}</div>
+                  <div className="value">{item.value}</div>
+                </>
+              ) : item.shopName ? (
+                <>
+                  <div className="shop">{item.shopName}</div>
+                  <div className="value">{item.value}</div>
+                </>
+              ) : (
+                <div className="value">{item.value}</div>
+              )}
+
+              <div className={`change ${item.changeClass}`}>{item.change}</div>
+            </div>
+          ))}
         </div>
-      )}
+      </div>
+      <h2 className="text-lg font-semibold mb-2">Biểu đồ doanh thu</h2>
+      <SalesChart dataForChart={dataForChart} filter={filter} />
     </div>
   );
 };

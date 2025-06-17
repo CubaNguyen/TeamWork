@@ -7,6 +7,8 @@ import {
 
 const OrderList = ({ onView }) => {
   const [orders, setOrders] = useState([]);
+  const [filter, setFilter] = useState("Đã giao hàng");
+  console.log("🚀 ~ OrderList ~ filter:", filter);
 
   const [searchTerm, setSearchTerm] = useState("");
   const statuses = [
@@ -70,9 +72,9 @@ const OrderList = ({ onView }) => {
     setCurrentPage((prev) => (prev < totalPages ? prev + 1 : prev));
   const prevPage = () => setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev));
 
-  const getOrders = async () => {
+  const getOrders = async (filter) => {
     try {
-      const res = await getAllOrders();
+      const res = await getAllOrders({ filter });
       if (res.data.code === 201) {
         const formattedOrders = res.data.data.map((order) => ({
           ...order,
@@ -100,8 +102,8 @@ const OrderList = ({ onView }) => {
   };
 
   useEffect(() => {
-    getOrders();
-  }, []);
+    getOrders(filter);
+  }, [filter]);
 
   return (
     <div className="OrderListDiv">
@@ -117,6 +119,14 @@ const OrderList = ({ onView }) => {
           Tìm kiếm
         </button>
       </div>
+      <select
+        style={{ marginBottom: "20px" }}
+        value={filter}
+        onChange={(e) => setFilter(e.target.value)}
+      >
+        <option value="Đã giao hàng">Đã giao hàng</option>
+        <option value="other">Các trạng thái còn lại</option>
+      </select>
       <table border="1" width="80%">
         <thead>
           <tr>

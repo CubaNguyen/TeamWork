@@ -51,6 +51,7 @@ const Login = () => {
         loginContext(null, res.token);
 
         const profileRes = await getProfile(); // api gọi /profile
+        console.log("🚀 ~ handleLogin ~ profileRes:", profileRes);
         if (profileRes) {
           loginContext(profileRes?.data?.data, res.token);
         }
@@ -60,6 +61,11 @@ const Login = () => {
         } else {
           navigate("/");
         }
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          password: res.message,
+        }));
       }
     } catch (error) {
       console.log("🚀 ~ handleLogin ~ handleLogin:", error);
@@ -86,7 +92,7 @@ const Login = () => {
         <div className="input-group">
           <input
             type="password"
-            name="password" // ✅ Thêm name vào input
+            name="password"
             placeholder="Mật khẩu"
             className="input-field"
             value={formData?.password}

@@ -2,7 +2,14 @@ const productService = require("../services/productService");
 
 const getAllProductsController = async (req, res) => {
   try {
-    let data = await productService.getAllProductsService();
+    const raw = req.body.categoryId;
+    let condition = raw;
+
+    if (!isNaN(raw)) {
+      condition = Number(raw);
+    }
+
+    let data = await productService.getAllProductsService(condition);
     return res.status(200).json({
       message: data.message,
       code: data.code,
@@ -98,6 +105,10 @@ const deleteProductController = async (req, res) => {
 const getAllProductsWithoutAccessoriesController = async (req, res) => {
   try {
     const condition = req.body;
+    console.log(
+      "🚀 ~ getAllProductsWithoutAccessoriesController ~ condition:",
+      condition
+    );
     const { categoryId } = req.body;
     const activeSortKeys = Object.entries(condition)
       .filter(([key, value]) => key !== "priceRange" && value === true)

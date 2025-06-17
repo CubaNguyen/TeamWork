@@ -65,7 +65,7 @@ function AdminRoutes() {
           }
         />
         <Route
-          path="/homeAdmin/productMacustomerManagernager/detail/:userId"
+          path="/homeAdmin/customerManager/detail/:userId"
           element={
             [1, 4].includes(role) ? <CustomerHistory /> : <AccessDenied />
           }

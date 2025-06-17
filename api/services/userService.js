@@ -133,6 +133,7 @@ const updateUserAddressService = async (userId, address) => {
       { address: address },
       { where: { id: userId } }
     );
+    console.log("🚀 ~ updateUserAddressService ~ updatedUser:", updatedUser);
     if (!updatedUser) {
       return { code: 404, message: "Không thấy user" };
     }

@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./productManager.scss";
 import { deleteProduct, getAllProduct } from "../../services/productService";
+import { ProductContext } from "../../context/ProductContext";
+import { getAllCategories } from "../../services/categoryService";
 
 const ProductManager = () => {
   const [products, setProducts] = useState([]);
-  console.log("🚀 ~ ProductManager ~ products:", products);
+  const [filter, setFilter] = useState("all");
+  const [categories, setCategories] = useState([]);
 
   // Lấy danh sách sản phẩm & danh mục
 
-  const handleGetAllProduct = async () => {
+  const handleGetAllProduct = async (filter) => {
     try {
-      const res = await getAllProduct();
+      const res = await getAllProduct({ categoryId: filter });
 
       if (res.data.code === 201) {
         setProducts(res.data.data);
@@ -33,17 +36,27 @@ const ProductManager = () => {
       console.log("🚀 ~ deleteProductbyId ~ deleteProductbyId:", error);
     }
   };
-
-  useEffect(() => {
-    handleGetAllProduct();
-  }, []);
-
   // Xóa sản phẩm
   const handleDelete = async (id) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) {
       await deleteProductbyId(id);
     }
   };
+  const getCategories = async () => {
+    try {
+      const res = await getAllCategories();
+      if (res.data.code === 201) {
+        setCategories(res.data.data);
+      }
+    } catch (error) {
+      console.log("🚀 ~ getCategories ~ Category:", error);
+    }
+  };
+
+  useEffect(() => {
+    getCategories();
+    handleGetAllProduct(filter);
+  }, [filter]);
 
   return (
     <div className="home-container">
@@ -60,6 +73,16 @@ const ProductManager = () => {
         <Link to="/homeAdmin/productManager/create" className="btn btn-add">
           Thêm sản phẩm
         </Link>
+      </div>
+      <div>
+        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+          <option value="all">Tất cả</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="table-container">

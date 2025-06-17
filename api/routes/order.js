@@ -4,19 +4,13 @@ const verifyRoles = require("../middleware/verifyRoles");
 const verifyToken = require("../middleware/verifyToken");
 
 // // xem danh sách đơn hàng
-router.get(
+router.post(
   "/getAllOrders",
   verifyToken,
   verifyRoles([1, 3]),
   orderController.getAllOrdersController
 );
-// Xem chi tiết đơn hàng
-router.get(
-  "/:id",
-  verifyToken,
-  verifyRoles([1, 3]),
-  orderController.getOrderDetailController
-);
+
 // Cập nhật trạng thái đơn hàng
 router.put(
   "/:id/status",
@@ -67,4 +61,29 @@ router.get(
   verifyRoles([1]),
   orderController.getRevenueController
 );
+
+// xem danh sách đơn hàng theo ngày tháng năm
+router.get(
+  "/getAllOrdersByDate",
+  verifyToken,
+  verifyRoles([1, 3]),
+  orderController.getAllOrdersByDateController
+);
+
+// Xem chi tiết đơn hàng
+router.get(
+  "/:id",
+  verifyToken,
+  verifyRoles([1, 3]),
+  orderController.getOrderDetailController
+);
+
+// mua nhanh san phẩm
+router.post(
+  "/quickBuy",
+  verifyToken,
+  verifyRoles([5]),
+  orderController.quickBuyController
+);
+
 module.exports = router;

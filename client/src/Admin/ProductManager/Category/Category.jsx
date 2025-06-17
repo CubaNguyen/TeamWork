@@ -96,6 +96,7 @@ function Category() {
           </button>
         </form>
       </div>
+
       <table className="custom-table">
         <thead>
           <tr>

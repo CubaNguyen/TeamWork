@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import AllProducts from "../../AllProducts/AllProducts";
 
 const SilverEarring = () => {
-  const categoryId = 4;
+  const categoryId = 13;
 
   const bannerData = {
     title: " KHUYÊN TAI BẠC NAM - ĐỊNH HÌNH SỰ KHÁC BIỆT",

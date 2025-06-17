@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import AllProducts from "../../AllProducts/AllProducts";
 
 const SilverBracelet = () => {
-  const categoryId = 2;
+  const categoryId = 11;
 
   const bannerData = {
     title: "VÒNG TAY BẠC NAM - KHÁC BIỆT VỚI SỐ ĐÔNG",

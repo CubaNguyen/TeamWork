@@ -1,51 +1,92 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./checkout_style.scss";
 import { UserContext } from "../../context/UserContext";
 import { useContext } from "react";
-import { getOrderUser, statusAfterPayment } from "../../services/orderService";
+import {
+  getOrderUser,
+  quickBuyProduct,
+  statusAfterPayment,
+} from "../../services/orderService";
 import { CartContext } from "../../context/CartContext";
 
 const Checkout = () => {
-  const [selectedMethod, setSelectedMethod] = useState("zalo");
+  // const [selectedMethod, setSelectedMethod] = useState("zalo");
+  const [country, setCountry] = useState("Việt Nam");
+  const [city, setCity] = useState("");
+  const [addressInput, setAddressInput] = useState("");
   const { cart, order } = useContext(CartContext);
-  console.log("🚀 ~ Checkout ~ cart:", cart);
+  const [addressToDelivery, setAddressToDelivery] = useState("");
   const user = useContext(UserContext);
-  console.log("🚀 ~ Checkout ~ user:", user.user);
+  const [selected, setSelected] = useState("default");
 
   const navigate = useNavigate();
-  const methods = [
-    {
-      id: "zalo",
-      label: "Thanh toán online qua cổng thanh toán ZaloPay",
-      description:
-        "Sau khi nhấp vào 'Thanh toán ngay', bạn sẽ được chuyển hướng đến Thanh toán online qua cổng thanh toán ZaloPay để hoàn tất việc mua hàng một cách an toàn.",
-    },
-    {
-      id: "cod",
-      label: "Thanh toán khi nhận hàng (COD)",
-    },
-    {
-      id: "bank",
-      label: "Tiền gửi ngân hàng",
-    },
-  ];
-  const updateStatus = async (id) => {
+
+  const updateStatus = async (id, address) => {
     try {
-      const res = await statusAfterPayment(id);
-      console.log("🚀 ~ updateStatus ~ res:", res);
+      const res = await statusAfterPayment(id, address);
       if (res.data.code === 201) {
+        navigate("/checkout/success");
       }
     } catch (error) {
       console.log("🚀 ~ updateStatus ~ error:", error);
     }
   };
+  useEffect(() => {
+    setAddressToDelivery(user?.user?.address);
+  }, []);
 
-  const handlePayment = () => {
-    updateStatus(order?.id);
-
-    navigate("/checkout/success");
+  const quickBuy = async (item, address) => {
+    try {
+      const res = await quickBuyProduct(item, address);
+      console.log("🚀 ~ quickBuy ~ res:", res);
+      if (res.data.code === 201) {
+        navigate("/checkout/success");
+      }
+    } catch (error) {
+      console.log("🚀 ~ quickBuy ~ error:", error);
+    }
   };
+
+  // const fullAddress = `${addressInput}, ${city}, ${country}`;
+  const handlePayment = () => {
+    const isUsingDefault = selected === "default";
+    const isUsingOther = selected === "other";
+
+    // Kiểm tra giỏ hàng rỗng khi không phải mua nhanh
+    if (!isQuickBuy && cart.length === 0) {
+      alert("Không có sản phẩm để thanh toán");
+      return;
+    }
+
+    // Kiểm tra địa chỉ
+    let finalAddress = "";
+
+    if (isUsingDefault) {
+      if (!addressToDelivery?.trim()) {
+        alert("Không có địa chỉ để thanh toán");
+        return;
+      }
+      finalAddress = addressToDelivery;
+    } else if (isUsingOther) {
+      if (!addressInput.trim() || !city.trim() || !country.trim()) {
+        alert("Vui lòng nhập đầy đủ địa chỉ, thành phố và quốc gia.");
+        return;
+      }
+      finalAddress = `${addressInput}, ${city}, ${country}`;
+    }
+
+    // Gọi đúng API tùy theo chế độ
+    if (isQuickBuy) {
+      quickBuy(item, finalAddress);
+    } else {
+      updateStatus(order?.id, finalAddress);
+    }
+  };
+  const location = useLocation();
+
+  const { item, isQuickBuy } = location.state || {};
+  console.log("🚀 ~ Checkout ~ item:", item);
 
   return (
     <div className="checkout-container">
@@ -59,72 +100,64 @@ const Checkout = () => {
           />
 
           <h2>Giao hàng</h2>
-          <select>
-            <option>Việt Nam</option>
-          </select>
-          <div className="name-fields">
-            <input
-              className="last-name"
-              type="text"
-              placeholder="Tên"
-              value={user?.user?.username}
-            />
-            {/* <input className="first-name" type="text" placeholder="Họ" /> */}
+          <div
+            className={`address ${selected === "default" ? "active" : ""}`}
+            onClick={() => setSelected("default")}
+          >
+            Địa chỉ mặc định :{" "}
+            {user?.user?.address ? user?.user?.address : "Chưa setting"}
           </div>
-          <div className="address">
-            <input type="text" placeholder="Địa chỉ" />
+          <div
+            className={`anotherAddress ${selected === "other" ? "active" : ""}`}
+            onClick={() => setSelected("other")}
+          >
+            Sử dụng địa chỉ khác{" "}
           </div>
-          <div className="city-fields">
-            <input type="text" placeholder="Thành phố" />
-            <input type="text" placeholder="Mã bưu chính (không bắt buộc)" />
-          </div>
-          <input type="text" placeholder="Điện thoại" />
+          {selected === "other" && (
+            <div className="custom-address-form">
+              <select
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+              >
+                <option>Việt Nam</option>
+                <option>Hoa Kỳ</option>
+                <option>Nhật Bản</option>
+              </select>
 
-          <div className="payment-methods">
-            <h2>Phương thức thanh toán</h2>
-            <p className="security-note">
-              Toàn bộ các giao dịch được bảo mật và mã hóa.
-            </p>
-            <div className="methods-list">
-              {methods.map((method) => (
-                <div
-                  key={method.id}
-                  className={`method-item ${
-                    selectedMethod === method.id ? "selected" : ""
-                  }`}
-                  onClick={() => setSelectedMethod(method.id)}
-                >
-                  <div className="radio-btn">
-                    <input
-                      type="radio"
-                      checked={selectedMethod === method.id}
-                      onChange={() => setSelectedMethod(method.id)}
-                    />
-                  </div>
-                  <div className="method-content">
-                    <div className="method-label">{method.label}</div>
-                    {/* {method.icons && (
-                      <div className="icons">
-                        {method.icons.map((icon) => (
-                          <img key={icon} src={`/${icon}.svg`} alt={icon} />
-                        ))}
-                      </div>
-                    )} */}
-                    {selectedMethod === method.id && method.description && (
-                      <div className="method-description">
-                        {/* <img
-                          className="browser-icon"
-                          src="/browser.svg"
-                          alt="browser"
-                        /> */}
-                        <p>{method.description}</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
+              <div className="name-fields">
+                <input
+                  className="last-name"
+                  type="text"
+                  placeholder="Tên"
+                  value={user?.user?.username || ""}
+                />
+                {/* <input className="first-name" type="text" placeholder="Họ" /> */}
+              </div>
+
+              <div className="addres">
+                <input
+                  type="text"
+                  placeholder="Địa chỉ"
+                  value={addressInput}
+                  onChange={(e) => setAddressInput(e.target.value)}
+                />
+              </div>
+
+              <div className="city-fields">
+                <input
+                  type="text"
+                  placeholder="Thành phố"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                />
+
+                <input
+                  type="text"
+                  placeholder="Mã bưu chính (không bắt buộc)"
+                />
+              </div>
             </div>
-          </div>
+          )}
 
           <button className="pay-button" onClick={handlePayment}>
             Thanh toán ngay
@@ -132,20 +165,31 @@ const Checkout = () => {
         </div>
 
         <div className="checkout-summary">
-          {cart?.map((item) => (
+          {isQuickBuy ? (
             <div className="summary-item" key={item.id}>
               <img src={item.image} alt={item.name} />
               <div>
                 <p>
-                  {item.name} (x{item.OrderDetail.quantity})
-                </p>{" "}
-                {/* Hiển thị số lượng nếu muốn */}
+                  {item.name} (x{item.quantity})
+                </p>
               </div>
-              <p className="price">
-                {item.OrderDetail.price.toLocaleString("vi-VN")} đ
-              </p>
+              <p className="price">{item.price.toLocaleString("vi-VN")} đ</p>
             </div>
-          ))}
+          ) : (
+            cart?.map((item) => (
+              <div className="summary-item" key={item.id}>
+                <img src={item.image} alt={item.name} />
+                <div>
+                  <p>
+                    {item.name} (x{item.OrderDetail.quantity})
+                  </p>
+                </div>
+                <p className="price">
+                  {item.OrderDetail.price.toLocaleString("vi-VN")} đ
+                </p>
+              </div>
+            ))
+          )}
 
           <input type="text" placeholder="Mã giảm giá hoặc thẻ quà tặng" />
           <button>Áp dụng</button>

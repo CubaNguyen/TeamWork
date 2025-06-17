@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import AllProducts from "../../AllProducts/AllProducts";
 
 const SilverChain = () => {
-  const categoryId = 3;
+  const categoryId = 12;
 
   const bannerData = {
     title: " DÂY CHUYỀN BẠC NAM - THIẾT KẾ ĐỘC BẢN",
