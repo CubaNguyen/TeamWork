@@ -49,7 +49,7 @@ function Gift() {
       </div>
 
       <div className="tren">
-        <h2>QUA TANG DA TANG Y NGHIA</h2>
+        <h2>QUÀ TẶNG ĐA TẦNG Ý NGHĨA</h2>
       </div>
       <div className="duoi">
         <div className="box">
