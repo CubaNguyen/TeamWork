@@ -1,0 +1,20 @@
+# data/ring.py
+urls = [
+    "https://helios.vn/cdn/shop/files/ascent-helios-silver_1_1080x.jpg?v=1754845103",
+    "https://helios.vn/cdn/shop/files/agape-helios-silver_2_1080x.jpg?v=1754845107",
+    "https://helios.vn/cdn/shop/files/hawaii-helios-silver_3_1080x.jpg?v=1754845114",
+    "https://helios.vn/cdn/shop/files/nhan-bac-nam-lotusgot-v3-helios-silver-web_1_1080x.jpg?v=1754845117",
+    "https://helios.vn/cdn/shop/files/enso-lotus-helios-silver_1_540x.jpg?v=1754845124",
+    "https://helios.vn/cdn/shop/files/loopra-lotus-helios-silver_3_540x.jpg?v=1754845127",
+    "https://helios.vn/cdn/shop/files/trunk-chrysaber-helios-black-silver_1_540x.jpg?v=1754845148",
+    "https://helios.vn/cdn/shop/files/mafi-lotus-helios-silver_1_540x.jpg?v=1754845156",
+    "https://helios.vn/cdn/shop/files/NhanRoto_AnhWeb-min_540x.jpg?v=1754845166",
+    "https://helios.vn/cdn/shop/files/torua-helios-black-silver_3_900x.jpg?v=1754845168",
+    "https://helios.vn/cdn/shop/files/adamah-helios-silver_1_-min_540x.jpg?v=1754845172",
+    "https://helios.vn/cdn/shop/files/aten7500-min_540x.jpg?v=1754845197",
+    "https://helios.vn/cdn/shop/files/NhanAperion_AnhWeb_2_-min_540x.jpg?v=1754845199",
+    "https://helios.vn/cdn/shop/files/reincar-helios-silver_3_540x.jpg?v=1754845207",
+    "https://helios.vn/cdn/shop/files/pole-helios-silver_1_540x.jpg?v=1754845210",
+    "https://helios.vn/cdn/shop/files/tongass-sunflower-ring-helios-black-silver_3_540x.jpg?v=1754845235",
+    "https://helios.vn/cdn/shop/files/vostok-lotus-ring-helios-black-silver_3_900x.jpg?v=1754966673",
+]

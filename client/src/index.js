@@ -4,6 +4,7 @@ import App from "./App";
 import { UserProvider } from "./context/UserContext";
 import { ProductProvider } from "./context/ProductContext";
 import { CartProvider } from "./context/CartContext";
+import { SearchProvider } from "./context/SearchContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -11,7 +12,9 @@ root.render(
     <ProductProvider>
       <UserProvider>
         <CartProvider>
-          <App />
+          <SearchProvider>
+            <App />
+          </SearchProvider>
         </CartProvider>
       </UserProvider>
     </ProductProvider>

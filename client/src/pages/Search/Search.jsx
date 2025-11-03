@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import AllProducts from "../AllProducts/AllProducts";
 import { useLocation, useNavigate } from "react-router-dom";
+import { SearchContext } from "../../context/SearchContext";
 
 const Search = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { imageFile } = useContext(SearchContext);
 
   const queryParams = new URLSearchParams(location.search);
   const q = queryParams.get("q") || "";
@@ -24,6 +26,7 @@ const Search = () => {
         searchTerm={searchTerm}
         setInputValue={setInputValue}
         inputValue={inputValue}
+        imageFile={imageFile}
         onSearch={() => setSearchTerm(inputValue)}
       />
     </>

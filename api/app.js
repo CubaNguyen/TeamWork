@@ -10,6 +10,9 @@ const orderRoute = require("./routes/order");
 const productRoute = require("./routes/product");
 const categoryRoute = require("./routes/category");
 
+// AI Recommendation
+const recommendRoute = require("./routes/recommend");
+
 require("./models/AssociationsRelationship");
 
 const PORT = process.env.PORT || 3030;
@@ -31,6 +34,9 @@ app.use("/api/auth", authRoute);
 app.use("/api/order", orderRoute);
 app.use("/api/product", productRoute);
 app.use("/api/category", categoryRoute);
+
+// AI Recommendation
+app.use("/api/recommend", recommendRoute);
 
 app.listen(PORT, () => {
   console.log("backend server is running");

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import {
   addProduct,
   deleteProduct,
@@ -9,6 +9,7 @@ import {
   getNewestProduct,
   getProductDetail,
 } from "../services/productService";
+import { SearchContext } from "./SearchContext";
 
 // Khởi tạo Context
 const ProductContext = createContext(null);
@@ -35,10 +36,6 @@ const ProductProvider = ({ children }) => {
     }
   };
   const allProductWithoutAccessoriesContext = async (condition) => {
-    console.log(
-      "🚀 ~ allProductWithoutAccessoriesContext ~ condition:",
-      condition
-    );
     try {
       setLoading(true);
       await delay(ms);

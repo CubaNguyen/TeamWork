@@ -6,6 +6,7 @@ import { UserContext } from "../../context/UserContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
 import { ProductContext } from "../../context/ProductContext";
+import { SearchContext } from "../../context/SearchContext";
 import { ClipLoader } from "react-spinners";
 import removeAccents from "remove-accents";
 
@@ -18,6 +19,7 @@ const AllProducts = ({
   setInputValue,
   onSearch,
   inputValue,
+  imageFile,
 }) => {
   const user = useContext(UserContext);
   const navigate = useNavigate();
@@ -33,6 +35,10 @@ const AllProducts = ({
   const [expanded, setExpanded] = useState({});
   const { loading, productsByCondition, allProductWithoutAccessoriesContext } =
     useContext(ProductContext);
+
+  const { recommendedProducts, recommendProductContext } =
+    useContext(SearchContext);
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [range, setRange] = useState([0, 10000000]);
   const [condition, setCondition] = useState([]);
@@ -109,27 +115,48 @@ const AllProducts = ({
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    if (!(imageFile instanceof File)) return;
+    recommendProductContext(imageFile);
+  }, [imageFile]);
   const bannerData = banner || {
     title: "ALL PRODUCT",
     description: "",
     image: "all-products.jpg",
   };
 
-  const filtered =
-    searchTerm && searchTerm.trim().toLowerCase()
-      ? productsByCondition.filter((product) => {
-          const normalizedSearchTerm = removeAccents(
-            searchTerm.trim().toLowerCase()
-          );
-          const normalizedProductName = removeAccents(
-            product.name.toLowerCase()
-          );
+  // const filtered =
+  //   searchTerm && searchTerm.trim().toLowerCase()
+  //     ? productsByCondition.filter((product) => {
+  //         const normalizedSearchTerm = removeAccents(
+  //           searchTerm.trim().toLowerCase()
+  //         );
+  //         const normalizedProductName = removeAccents(
+  //           product.name.toLowerCase()
+  //         );
 
-          return normalizedProductName.includes(normalizedSearchTerm);
-        })
-      : productsByCondition;
-  const productsToDisplay = isSearch ? filtered : productsByCondition;
-  // console.log("🚀 ~ AllProducts ~ productsToDisplay:", productsToDisplay);
+  //         return normalizedProductName.includes(normalizedSearchTerm);
+  //       })
+  //     : productsByCondition;
+
+  // const productsToDisplay = isSearch ? filtered : productsByCondition;
+  let productsToDisplay;
+
+  if (searchTerm && searchTerm.trim().toLowerCase() === "byimage") {
+    // nếu searchTerm là "byImage" thì dùng recommendedProducts
+    productsToDisplay = recommendedProducts || [];
+  } else if (isSearch) {
+    // nếu có search thì filter trên productsByCondition
+    const normalizedSearchTerm = removeAccents(searchTerm.trim().toLowerCase());
+    const filtered = productsByCondition.filter((product) =>
+      removeAccents(product.name.toLowerCase()).includes(normalizedSearchTerm)
+    );
+    productsToDisplay = filtered;
+  } else {
+    // mặc định
+    productsToDisplay = productsByCondition;
+  }
 
   const viewProduct = (product) => {
     navigate(`/product/${product.name}`, { state: { product } });
@@ -147,7 +174,7 @@ const AllProducts = ({
             Tìm Kiếm
           </div>
           <div className="input">
-            <input
+            {/* <input
               type="text"
               placeholder="Gõ để tìm kiếm"
               className="search-input"
@@ -156,39 +183,40 @@ const AllProducts = ({
               // onChange={(e) => setQuery(e.target.value)}
 
               name=""
-            />
-            {/* <NavLink
-            style={{
-              textDecoration: "none",
-              fontSize: "30px",
-              // cursor: "pointer",
-              color: "white",
-              cursor: query.trim() ? "pointer" : "not-allowed",
-            }}
-            exact
-            onClick={(e) => {
-              if (!query.trim()) {
-                e.preventDefault(); // Chặn chuyển trang nếu trống
-              } else {
-                closeModal();
-              }
-            }}
-            to={`/search?q=${encodeURIComponent(query)}`}
-            // to={`/homeAdmin/productMacustomerManagernager/detail/${customer.id}`}
-          >
-            <FaArrowRightLong />
-          </NavLink> */}
-            <div
-              onClick={onSearch}
-              style={{
-                cursor: inputValue.trim() ? "pointer" : "not-allowed",
-                color: "white",
-                marginLeft: "10px",
-                fontSize: "24px",
-              }}
-            >
-              <FaArrowRightLong />
-            </div>
+            /> */}
+            {inputValue === "byImage" && imageFile ? (
+              // Nếu là byImage thì hiện ảnh
+              <div className="search-preview">
+                <img
+                  src={URL.createObjectURL(imageFile)}
+                  alt="search preview"
+                  style={{ width: "120px", borderRadius: "8px" }}
+                />
+              </div>
+            ) : (
+              // Nếu không thì hiện input bình thường
+
+              <>
+                <input
+                  type="text"
+                  placeholder="Gõ để tìm kiếm"
+                  className="search-input"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                />
+                <div
+                  onClick={onSearch}
+                  style={{
+                    cursor: inputValue.trim() ? "pointer" : "not-allowed",
+                    color: "white",
+                    marginLeft: "10px",
+                    fontSize: "24px",
+                  }}
+                >
+                  <FaArrowRightLong />
+                </div>
+              </>
+            )}
           </div>
         </div>
       ) : (
